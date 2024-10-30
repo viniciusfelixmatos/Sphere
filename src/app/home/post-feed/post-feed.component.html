@@ -1,0 +1,64 @@
+<div *ngIf="posts$ | async as posts">
+  <div class="post-feed">
+    <div *ngFor="let post of posts" class="post">
+      <div class="post-header">
+        <img *ngIf="post.user" 
+             [src]="'http://localhost:3000/uploads/' + (post.user.profilePicture || 'assets/default-profile.png')" 
+             alt="Profile Picture" 
+             class="profile-pic" />
+
+        <div class="post-user-info">
+          <h3>
+            <a class="username-link" [routerLink]="['/home/user-profile', post.user.id]">
+              {{ post.user.username || 'Usuário Desconhecido' }}
+            </a>
+          </h3>          
+          <p>{{ post.timestamp | date: 'short' }}</p>
+        </div>
+      </div>
+
+      <div class="post-content">
+        <p>{{ post.content }}</p>
+      </div>
+
+      <div class="post-actions">
+        <button 
+          (click)="likePost(post)" 
+          [ngClass]="{'liked': post.hasLiked}" 
+          aria-label="Curtir post"
+        >
+          <mat-icon>{{ post.hasLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
+          <span class="like-count">{{ post.likes }}</span>
+        </button>
+
+        <button (click)="toggleCommenting(post)" aria-label="Comentar post">
+          <mat-icon>comment</mat-icon>
+        </button>
+
+        <button (click)="favoritePost(post)" aria-label="Favoritar post">
+          <mat-icon>{{ post.favorites ? 'bookmark' : 'bookmark_border' }}</mat-icon>
+        </button>
+      </div>
+      
+      <div class="post-comments" *ngIf="post.comments && post.comments.length > 0">
+        <div *ngFor="let comment of post.comments.slice(0, post.showAllComments ? post.comments.length : 3)" class="comment">
+          <img [src]="getProfilePictureUrl(post.user.profilePicture)" alt="{{ post.user.username }}'s profile picture" class="comment-profile-pic"/>
+          <div class="comment-content">
+            <strong>{{ comment.user.username || 'Comentador Desconhecido' }}</strong> {{ comment.text }}
+          </div>
+        </div>
+
+        <button *ngIf="post.comments.length > 3" (click)="viewAllComments(post)" class="view-more-comments">
+          {{ post.showAllComments ? 'Mostrar Menos' : 'Mostrar Mais' }}
+        </button>
+      </div>
+
+      <div *ngIf="post.isCommenting" class="post-comment-section">
+        <input [(ngModel)]="post.newComment" placeholder="Escreva um comentário" />
+        <button (click)="addComment(post, post.newComment)">
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

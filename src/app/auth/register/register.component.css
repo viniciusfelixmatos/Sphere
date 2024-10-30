@@ -1,0 +1,119 @@
+/* Estilo global para o container do registro */
+.register-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: #121212; /* Fundo escuro */
+}
+
+/* Caixa de registro */
+.register-box {
+    background-color: #1C1C1C; /* Fundo da caixa de registro */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+/* Título do registro */
+.register-box h2 {
+    color: #E0E0E0; /* Texto cinza claro */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Grupo de formulário */
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels dos campos */
+.form-group label {
+    color: #E0E0E0; /* Texto cinza claro */
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Inputs dos campos */
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #4A4A4A; /* Borda cinza escuro */
+    border-radius: 4px;
+    background-color: #2C2C2C; /* Fundo do input */
+    color: #E0E0E0; /* Texto cinza claro */
+    box-sizing: border-box;
+}
+
+/* Botão de registro */
+.register-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #FF7043; /* Laranja */
+    color: #FFFFFF; /* Texto branco */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+    background-color: #FF8A65; /* Laranja mais claro ao passar o mouse */
+}
+
+/* Link para login */
+.login-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login-link p {
+    color: #E0E0E0; /* Texto cinza claro */
+}
+
+.login-link a {
+    color: #FF7043; /* Laranja */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link a:hover {
+    color: #FF8A65; /* Laranja mais claro ao passar o mouse */
+}
+
+.success-message {
+    color: green;
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+  }  
+
+/* Responsividade para telas menores */
+@media (max-width: 480px) {
+    .register-box {
+        padding: 15px;
+    }
+
+    .form-group input {
+        padding: 8px;
+    }
+
+    .register-button {
+        padding: 8px;
+    }
+}

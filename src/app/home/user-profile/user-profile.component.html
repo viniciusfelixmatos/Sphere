@@ -1,0 +1,39 @@
+<div *ngIf="loading">Carregando...</div>
+<div *ngIf="error">{{ error }}</div>
+<div *ngIf="!loading && !error">
+  <!-- Profile Container -->
+  <div class="profile-container">
+    <div class="profile-header">
+      <!-- Profile Image Section -->
+      <div class="profile-image-container">
+        <img class="profile-picture" 
+             [src]="user.profilePicture ? 'http://localhost:3000/uploads/' + user.profilePicture : 'http://localhost:3000/uploads/default-profile.png'" 
+             alt="Foto de Perfil de {{ user.username }}">
+      </div>
+    </div>
+
+    <!-- Profile Info Section -->
+    <div class="profile-info">
+      <div class="profile-info-header">
+        <h2 class="username">{{ user.username }}</h2>
+      </div>
+      
+      <div class="profile-stats">
+        <span><strong>{{ user.postsCount }}</strong> Publicações</span>
+        <span><strong>{{ user.followersCount }}</strong> Seguidores</span>
+        <span><strong>{{ user.followingCount }}</strong> Seguindo</span>
+      </div>
+    </div>
+    
+    <div class="profile-bio">
+      <p>{{ user.bio }}</p>
+    </div>
+
+    <!-- Follow Button -->
+    <!-- Follow Button -->
+<button *ngIf="user.id !== loggedInUserId" class="follow-button" (click)="followUser()" [disabled]="loading || error">
+{{ user.isFollowing ? 'Deixar de Seguir' : 'Seguir' }}
+</button>
+
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<div class="home-page-container">
+  <!-- Sidebar -->
+  <aside class="sidebar-container">
+    <div class="sidebar-item" (click)="navigateToHome()">
+      <mat-icon class="sidebar-icon" style="font-size: 32px;">home</mat-icon>
+    </div>
+    <div class="sidebar-item" (click)="navigateToProfile()">
+      <mat-icon class="sidebar-icon" style="font-size: 32px;">account_circle</mat-icon>
+    </div>
+    <div class="sidebar-item" (click)="navigateToCreatePost()">
+      <mat-icon class="sidebar-icon" style="font-size: 32px;">create</mat-icon>
+    </div>
+    <div class="sidebar-item" (click)="navigateToSearch()">
+      <mat-icon class="sidebar-icon" style="font-size: 32px;">search</mat-icon>
+    </div>
+    <div class="sidebar-item" (click)="navigateToNotifications()">
+      <mat-icon class="sidebar-icon" style="font-size: 32px;">notifications</mat-icon>
+    </div>
+    <div class="sidebar-item" (click)="navigateToMessages()">
+      <mat-icon class="sidebar-icon" style="font-size: 32px;">message</mat-icon>
+    </div>
+  </aside>
+
+  <!-- Modal de Criação de Postagem -->
+  <div class="modal" [ngClass]="{'show': isCreatePostOpen}" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Criar Postagem</h5>
+          <button type="button" class="close" aria-label="Close" (click)="closeCreatePost()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="savePost()">
+            <div class="create-post-container">
+              <div class="user-profile">
+                <img class="profile-picture" [src]="userProfilePicture" alt="Imagem de Perfil">
+              </div>
+              <div class="post-content">
+                <textarea [(ngModel)]="postText" placeholder="O que você está pensando?" name="postText"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Publicar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Desenvolvimento -->
+<div *ngIf="isDevelopmentModalOpen" class="development-modal-overlay">
+  <div class="development-modal-content">
+    <h2 class="development-modal-title">Em Desenvolvimento...</h2>
+    <p class="development-modal-message">Esta funcionalidade ainda está em desenvolvimento. Volte em breve!</p>
+    <div class="development-progress-bar">
+      <div class="progress" [style.width.%]="progress"></div>
+    </div>
+    <button (click)="closeDevelopmentModal()" class="development-modal-close-btn">Fechar</button>
+  </div>
+</div>
+
+
+
+  <!-- Main Content -->
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

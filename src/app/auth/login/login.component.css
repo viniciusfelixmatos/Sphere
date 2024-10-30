@@ -1,0 +1,167 @@
+/* Estilo global */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #121212; /* Fundo escuro */
+}
+
+/* Container principal de login */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #121212; /* Fundo escuro para a container */
+}
+
+.error-message {
+    color: red; /* Muda a cor do texto para vermelho */
+    margin-top: 10px;
+    text-align: center; /* Centraliza o texto */
+    font-weight: bold; /* Torna a fonte em negrito */
+    font-size: 0.9rem; /* Diminui o tamanho da fonte */
+    background-color: #1C1C1C; /* Fundo cinza escuro */
+    border-radius: 5px; /* Arredonda os cantos */
+    padding: 10px; /* Adiciona um espaçamento interno */
+}
+
+/* Caixa de login */
+.login-box {
+    background-color: #1C1C1C; /* Fundo da caixa de login */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Adiciona a fonte "Poppins" ao título */
+.login-box h2 {
+    font-family: 'Poppins', sans-serif; /* Define a fonte Poppins */
+    font-size: 2.5rem;
+    font-weight: 600; /* Fonte mais grossa */
+    text-align: center;
+    margin-bottom: 20px;
+    color: #E0E0E0;
+    letter-spacing: 2px;
+    position: relative;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* Estilo especial para a primeira letra */
+.login-box h2::first-letter {
+    color: #FF7043;
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Grupo de formulário */
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels dos campos */
+.form-group label {
+    color: #E0E0E0; /* Texto cinza claro */
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Inputs dos campos */
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #4A4A4A; /* Borda cinza escuro */
+    border-radius: 4px;
+    background-color: #2C2C2C; /* Fundo do input ajustado para mais escuro */
+    color: #E0E0E0; /* Texto cinza claro */
+    box-sizing: border-box;
+}
+
+/* Botão de login */
+.login-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #FF7043; /* Laranja */
+    color: #FFFFFF; /* Texto branco */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #FF8A65; /* Laranja mais claro ao passar o mouse */
+}
+
+/* Link para registro */
+.register-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.register-link p {
+    color: #E0E0E0; /* Texto cinza claro */
+}
+
+.register-link a {
+    color: #FF7043; /* Laranja */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    color: #FF8A65; /* Laranja mais claro ao passar o mouse */
+}
+
+/* Estilo especial para a primeira letra */
+.login-box h2::first-letter {
+    color: #FF7043; /* Cor diferente para a letra "S" */
+    font-size: 3.5rem; /* Aumenta o tamanho da primeira letra */
+    font-weight: 900; /* Deixa a primeira letra mais grossa */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra para a primeira letra */
+  }
+
+/* Responsividade para telas menores */
+@media (max-width: 480px) {
+    .login-box {
+        padding: 15px;
+    }
+
+    .form-group input {
+        padding: 8px;
+    }
+
+    .login-button {
+        padding: 8px;
+    }
+
+    .register-box {
+        padding: 15px; /* Padding padrão para telas menores que 480px */
+    }
+}
+
+/* Responsividade específica para telas menores que 375px */
+@media (max-width: 375px) {
+    .login-box {
+        padding: 8px; /* Padding reduzido para telas menores que 375px */
+    }
+
+    .register-box {
+        padding: 8px; /* Padding reduzido para telas menores que 375px */
+    }
+}
+
+

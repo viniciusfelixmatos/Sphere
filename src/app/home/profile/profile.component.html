@@ -1,0 +1,159 @@
+<!-- Profile Container -->
+<div class="profile-container">
+  <!-- Profile Header: Image and Info -->
+  <div class="profile-header">
+    <!-- Profile Image Section -->
+    <div class="profile-image-container">
+      <img class="profile-picture" 
+           [src]="user.profilePicture ? user.profilePicture : 'http://localhost:3000/uploads/default-profile.png'" 
+           alt="Foto de Perfil de {{ user.username }}">
+    </div>
+
+    <!-- Profile Info Section -->
+    <div class="profile-info">
+      <div class="profile-info-header">
+        <h2 class="username">{{ user.username }}</h2>
+        <button class="edit-profile-btn" (click)="openEditProfile()">Editar Perfil</button>
+      </div>
+
+      <div class="profile-stats">
+        <span><strong>{{ user.postsCount }}</strong> Publicações</span>
+        <span><strong>{{ user.followersCount }}</strong> Seguidores</span>
+        <span><strong>{{ user.followingCount }}</strong> Seguindo</span>
+      </div>
+
+      <div class="profile-bio">
+        <p>{{ user.bio }}</p>
+      </div>
+
+      <div class="profile-actions">
+        <button class="profile-action-btn" (click)="showLikes()" [class.active]="activeTab === 'likes'">
+          <mat-icon>favorite</mat-icon>
+        </button>
+        
+        <button class="profile-action-btn" (click)="showComments()" [class.active]="activeTab === 'comments'">
+          <mat-icon>comment</mat-icon>
+        </button>
+        
+        <button class="profile-action-btn" (click)="showFavorites()" [class.active]="activeTab === 'favorites'">
+          <mat-icon>bookmark</mat-icon>
+        </button>
+      </div>
+
+      <div class="content-display">
+        <!-- Seção de Posts Curtidos -->
+        <section *ngIf="showLikesContent" class="content-section likes-section">
+          <h3 class="likes-section-title">Posts Curtidos:</h3>
+          <ul class="likes-list">
+            <li *ngFor="let post of likedPosts" class="likes-item">
+              <div class="likes-header">
+                <!-- Imagem de perfil do usuário que criou o post -->
+                <img [src]="post.user.profilePicture" alt="{{ post.user.username }}'s profile picture" class="likes-profile-picture">
+      
+                <!-- Nome de usuário -->
+                <span class="likes-username">{{ post.user.username }}</span>
+              </div>
+      
+              <!-- Conteúdo do post -->
+              <div class="likes-content">{{ post.content }}</div>
+      
+              <!-- Timestamp do post -->
+              <div class="likes-timestamp">{{ post.timestamp | date:'short' }}</div>
+            </li>
+          </ul>
+        </section>
+        
+        <!-- Seção de Comentários Feitos -->
+        <section *ngIf="showCommentsContent" class="content-section comments-section">
+          <h3 class="section-title">Comentários Feitos:</h3>
+          <ul class="content-list">
+            <li *ngFor="let comment of userComments" class="content-item comment-item">
+              <div class="comment-container">
+                <!-- Foto de Perfil do Usuário que fez o comentário -->
+                <div class="comment-profile-picture">
+                  <img class="profile-picture-circle" 
+                       [src]="comment.profilePicture ? 'http://localhost:3000/uploads/' + comment.profilePicture : 'http://localhost:3000/uploads/default-profile.png'" 
+                       alt="Foto de Perfil de {{ comment.username || 'Usuário Desconhecido' }}">
+                </div>
+
+                <!-- Texto do Comentário -->
+                <div class="comment-content">
+                  <div class="comment-timestamp">
+                    <small>{{ comment.timestamp | date:'short' }}</small>
+                  </div>
+                  <div class="comment-text">
+                    <strong>{{ comment.username || 'Usuário Desconhecido' }}:</strong> {{ comment.text }}
+                  </div>                  
+                </div>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Seção de Posts Favoritados -->
+        <section *ngIf="showFavoritesContent" class="content-section favorites-section">
+          <h3 class="section-title">Posts Favoritados:</h3>
+          <ul class="content-list">
+            <li *ngFor="let favorite of favoritePosts" class="content-item">
+              <div class="content-header">
+                <!-- Imagem de perfil do usuário que criou o post -->
+                <img [src]="favorite.user.profilePicture" alt="{{ favorite.user.username }}'s profile picture" class="profile-picture">
+              
+                <!-- Nome de usuário -->
+                <span class="username">{{ favorite.user.username }}</span>
+              </div>
+
+              <!-- Conteúdo do post -->
+              <div class="post-content">{{ favorite.content }}</div>
+            </li>
+          </ul>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div class="modal" [ngClass]="{'show': isEditProfileOpen}" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Perfil</h5>
+          <button type="button" class="close" aria-label="Close" (click)="closeEditProfile()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <form (ngSubmit)="saveProfileChanges()">
+            <div class="profile-image-edit-container">
+              <div class="profile-image-preview">
+                <img [src]="profilePicturePreview ? profilePicturePreview : 'http://localhost:3000/uploads/default-profile.png'" alt="Imagem de Perfil">
+              </div>
+              <button type="button" class="change-photo-btn" (click)="triggerFileInput()">Alterar Foto</button>
+              <input type="file" #profilePictureInput (change)="onProfilePictureChange($event)" style="display: none;">
+            </div>
+
+            <p class="warning-message">
+              Por favor, escolha uma imagem menor que 5MB e com dimensões recomendadas de 800x600 pixels.
+            </p>
+            
+            <div class="form-group">
+              <label for="username">Nome de Usuário</label>
+              <input type="text" id="username" [(ngModel)]="editedUsername" name="username" required minlength="3">
+              <div *ngIf="!editedUsername && isEditProfileOpen" class="error-message">O campo é obrigatório.</div>
+              <div *ngIf="(editedUsername || '').length < 3 && isEditProfileOpen" class="error-message">O nome de usuário deve ter pelo menos 3 caracteres.</div>
+            </div>
+            
+            <div class="form-group">
+              <label for="bio">Biografia</label>
+              <textarea id="bio" [(ngModel)]="editedBio" name="bio"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

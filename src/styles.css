@@ -1,0 +1,15 @@
+/* Reseta as margens e os preenchimentos dos elementos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Inclui bordas e preenchimentos no cálculo de largura e altura */
+}
+
+/* Define a altura de html e body como 100% */
+html, body {
+    height: 100%;
+    width: 100%; /* Garante que a largura também seja 100% */
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

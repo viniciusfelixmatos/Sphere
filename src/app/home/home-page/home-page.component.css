@@ -1,0 +1,344 @@
+/* src/app/home/home-page/home-page.component.scss */
+.home-page-container {
+  display: flex;
+  height: 100vh;
+  flex-direction: row;
+}
+
+.sidebar-container {
+  width: 80px;
+  background-color: #333;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 1000;
+}
+
+.sidebar-item {
+  margin: 15px 0;
+  cursor: pointer;
+}
+
+.sidebar-icon {
+  font-size: 24px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  color: #FFF;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.sidebar-icon:hover {
+  color: #ff5722;
+  transform: scale(1.2);
+}
+
+.mat-icon {
+  font-size: inherit;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  background-color: #333;
+  margin-left: 80px;
+}
+
+/* Modal de Criação de Postagem */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 1000;
+}
+
+.modal.show {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-dialog {
+  margin: 5% auto;
+  max-width: 50%; /* Largura máxima reduzida */
+  width: 60%; /* Largura fixa ajustada */
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  transform: translateY(-50px);
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+
+.modal.show .modal-dialog {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.close {
+  background: none;
+  border: none;
+  color: #f1f1f1;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.close:hover {
+  color: #ff6b6b;
+  transform: scale(1.2);
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  background-color: #333;
+  color: #f1f1f1;
+  padding: 20px; /* Aumentar o padding do header */
+  border-bottom: 1px solid #444;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-size: 1.5rem; /* Aumentar o tamanho da fonte do título */
+  font-weight: 500;
+}
+
+.modal-body {
+  padding: 30px; /* Aumentar o padding do corpo do modal */
+  color: #f1f1f1;
+}
+
+.create-post-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.user-profile {
+  flex-shrink: 0;
+}
+
+.profile-picture {
+  width: 80px; /* Aumentar o tamanho da imagem do perfil */
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #444;
+  background-color: #333;
+}
+
+.post-content {
+  flex: 1;
+}
+
+.post-content textarea {
+  width: 100%;
+  height: 120px; /* Aumentar a altura da textarea */
+  border: 1px solid #555;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 1rem;
+  background-color: #2c2c2c;
+  color: #f1f1f1;
+  resize: vertical;
+}
+
+/* Botão "Publicar" estilizado */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px; /* Aumentar o padding do footer */
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo básico do modal para ocultar */
+.modal {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: none;
+}
+
+/* Estilo para o modal visível */
+.modal.show {
+  opacity: 1;
+  transform: translateY(0);
+  display: block; /* Exibe o modal quando está no estado "show" */
+}
+
+/* CSS DO MODAL DE DESENVOLVIMENTO - TEMA ESCURO MINIMALISTA */
+
+.development-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85); /* Fundo escuro semi-transparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Acima de outros elementos */
+}
+
+.development-modal-content {
+  background-color: #1c1c1c; /* Fundo escuro do modal */
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: modalFadeIn 0.3s ease; /* Animação de entrada */
+}
+
+.development-modal-title {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #eaeaea; /* Texto claro */
+}
+
+.development-modal-message {
+  font-size: 1rem;
+  color: #b0b0b0; /* Texto mais claro para melhor legibilidade */
+  margin-bottom: 20px;
+}
+
+.development-modal-close-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #ffffff; /* Texto do botão em branco */
+  background-color: #FF7043; /* Cor do botão alterada para #FF7043 */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.development-modal-close-btn:hover {
+  background-color: #e65c39; /* Cor do botão ao passar o mouse */
+}
+
+/* Barra de progresso específica para o Modal "Em Desenvolvimento..." */
+.development-progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #e0e0e0; /* Cor de fundo da barra em cinza claro */
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.development-progress-bar .progress {
+  height: 100%;
+  background-color: #b0b0b0; /* Cor da barra de progresso alterada para um tom mais escuro de cinza */
+  transition: width 0.1s linear;
+}
+
+/* Estilo básico do modal para ocultar */
+.modal {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: none;
+}
+
+.modal.show {
+  display: flex; /* Exibe o modal quando ativo */
+  animation: modalFadeIn 0.3s ease forwards;
+}
+
+.modal-dialog {
+  transform: scale(0.9); /* Inicia com escala reduzida */
+  animation: modalFadeIn 0.3s ease forwards; /* Anima o conteúdo do modal */
+}
+
+/* Botão Fechar */
+.modal .close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Animação para o modal aparecer suavemente */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/*CSS DO MODAL DE DESENVOLVIMENTO*/
+
+/* Media query para dispositivos menores */
+@media (max-width: 425px) {
+  .home-page-container {
+    flex-direction: column;
+  }
+
+  .sidebar-container {
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    top: auto;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .content {
+    margin-left: 0;
+    padding-bottom: 60px;
+  }
+
+  /* Ajustes para o modal em telas pequenas */
+  .modal-dialog {
+    width: 100%; /* Largura ajustada para 100% */
+    max-width: 100%; /* Largura máxima ajustada para 100% */
+    height: 100%; /* Altura ajustada para 100% */
+    margin: 0; /* Remover margem */
+    border-radius: 0; /* Remover borda arredondada */
+  }
+}

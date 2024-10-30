@@ -1,0 +1,217 @@
+.post-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Aumentado o espaçamento entre os posts */
+  padding: 20px;
+  background-color: #2c2c2c;
+  max-width: 800px;
+  margin: 0 auto;
+  max-height: 90vh; /* Definir uma altura máxima para o feed */
+  overflow-y: auto; /* Adicionar rolagem vertical quando necessário */
+}
+
+/* Estilização da barra de rolagem para WebKit (Chrome, Safari) */
+.post-feed::-webkit-scrollbar {
+  width: 8px; /* Largura da barra de rolagem */
+}
+
+.post-feed::-webkit-scrollbar-track {
+  background: #1c1c1c; /* Cor de fundo da trilha da barra de rolagem */
+  border-radius: 10px;
+}
+
+.post-feed::-webkit-scrollbar-thumb {
+  background: #444; /* Cor do polegar da barra de rolagem */
+  border-radius: 10px;
+}
+
+.post-feed::-webkit-scrollbar-thumb:hover {
+  background: #666; /* Cor do polegar da barra de rolagem ao passar o mouse */
+}
+
+.post {
+  background-color: #3c3c3c;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+  color: #e0e0e0;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #4a4a4a;
+}
+
+.post-content {
+  margin-top: 10px;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+.post-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.post-actions button {
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+  transition: color 0.3s, transform 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+.post-actions button:hover {
+  color: #FF5722;
+  transform: scale(1.1);
+}
+
+/* Nova classe para posts curtidos */
+.post-actions button.liked {
+  color: #FF4081; /* Cor rosa para o ícone de like quando já curtido */
+}
+
+.post-actions mat-icon {
+  font-size: 24px;
+  margin-right: 4px;
+}
+
+.post-actions .like-count {
+  font-size: 16px;
+}
+
+.post-comments {
+  margin-top: 10px;
+  padding: 10px 0;
+}
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  color: #b0b0b0;
+  white-space: pre-wrap;
+}
+
+.comment-profile-pic {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.comment-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-comment-section {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #4a4a4a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.post-comment-section input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background-color: #3c3c3c;
+  color: #e0e0e0;
+}
+
+.post-comment-section button {
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.post-comment-section button:hover {
+  color: #FF5722;
+}
+
+.view-more-comments {
+  background: none; /* Sem fundo */
+  border: none; /* Sem borda */
+  color: #ff7f50; /* Cor alaranjada */
+  cursor: pointer; /* Cursor pointer para indicar que é clicável */
+  text-decoration: underline; /* Texto sublinhado */
+  font-size: 14px; /* Tamanho da fonte */
+  transition: color 0.3s ease; /* Transição suave de cor */
+
+  &:hover {
+    color: #ff6347; /* Cor alaranjada mais escura ao passar o mouse */
+  }
+
+  &:focus {
+    outline: none; /* Remove a borda de foco */
+  }
+}
+
+.username-link {
+  color: white; /* Define a cor branca para o texto */
+  text-decoration: none; /* Remove o sublinhado padrão */
+
+  &:hover {
+    text-decoration: underline; /* Adiciona o sublinhado no hover */
+    color: white; /* Mantém a cor branca no hover */
+  }
+}
+
+/* Media query para dispositivos menores */
+@media (max-width: 425px) {
+  .post-feed {
+    padding: 10px;
+  }
+
+  .post {
+    padding: 10px;
+  }
+
+  .profile-pic {
+    width: 35px;
+    height: 35px;
+  }
+
+  .post-image {
+    margin-top: 5px;
+  }
+
+  .post-actions button {
+    font-size: 18px;
+  }
+
+  .post-comment-section input {
+    padding: 8px;
+  }
+
+  .post-comment-section button {
+    font-size: 18px;
+    padding: 8px;
+  }
+}

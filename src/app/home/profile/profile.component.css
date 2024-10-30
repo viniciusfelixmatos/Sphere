@@ -1,0 +1,749 @@
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #2b2b2b; /* Escuro mais claro para o fundo */
+  color: #f0f0f0; /* Texto claro */
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 900px;
+  width: 100%;
+}
+
+.comments-section {
+  max-height: 350px; /* Altura máxima da seção de comentários */
+}
+
+.comments-container {
+  max-height: none; /* Remove a altura máxima */
+  margin-top: 10px; /* Espaço entre o título e a lista de comentários */
+  border: none; /* Remove a borda */
+  padding: 0; /* Remove o preenchimento interno */
+}
+
+.content-list {
+  max-height: 250px; /* Altura máxima para a lista de comentários */
+  overflow-y: auto; /* Barra de rolagem vertical */
+  padding: 0; /* Remove o preenchimento padrão da lista */
+  margin: 10px 0; /* Margem acima e abaixo */
+  list-style-type: none; /* Remove marcadores da lista */
+  border: 1px solid #555; /* Borda em tom cinza escuro */
+}
+
+/* Estilizando a barra de rolagem para navegadores WebKit */
+.content-list::-webkit-scrollbar {
+  width: 8px; /* Largura da barra de rolagem */
+}
+
+.content-list::-webkit-scrollbar-thumb {
+  background-color: #888; /* Cor do 'thumb' da barra de rolagem */
+  border-radius: 4px; /* Bordas arredondadas */
+}
+
+.content-list::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Cor do 'thumb' ao passar o mouse */
+}
+
+.content-item {
+  margin-bottom: 10px; /* Espaço entre os comentários */
+  padding: 10px; /* Espaçamento interno */
+  border: 1px solid #ddd; /* Borda para os itens da lista (opcional) */
+  border-radius: 4px; /* Bordas arredondadas para itens */
+}
+
+.profile-image-container {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #565656; /* Bordas escuras */
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 10px;
+}
+
+.profile-info-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.username {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff; /* Nome do usuário em branco */
+  margin-right: 10px;
+}
+
+.edit-profile-btn {
+  background-color: #444444; /* Cor escura para o botão */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: #ffffff; /* Texto branco no botão */
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 14px;
+}
+
+.edit-profile-btn:hover {
+  background-color: #ff6600; /* Efeito de hover com laranja */
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Alinha verticalmente os itens */
+  width: 80%; /* Mantendo a largura reduzida */
+  margin: 8px auto; /* Margem automática para centralizar horizontalmente */
+}
+
+
+.profile-stats span {
+  font-size: 14px; /* Reduzindo o tamanho da fonte */
+  color: #cccccc; /* Cinza claro para estatísticas */
+  margin: 0 8px; /* Espaçamento entre os itens */
+}
+
+.profile-bio {
+  margin-top: 20px;
+}
+
+.profile-bio p {
+  font-size: 16px;
+  color: #f0f0f0; /* Texto da bio em branco claro */
+  margin: 0;
+  white-space: pre-line; /* Preserva quebras de linha e espaços de formatação */
+}
+
+/* Estilo geral do modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Fundo escuro com opacidade */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease, visibility 0.3s ease; /* Transições suaves */
+}
+
+.modal.show {
+  display: flex;
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Estilo do diálogo do modal */
+.modal-dialog {
+  max-width: 700px; /* Largura maior para mais conforto */
+  margin: 1rem;
+  background: linear-gradient(145deg, #1c1c1c, #0d0d0d); /* Gradiente para profundidade */
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6); /* Sombra mais pronunciada */
+}
+
+/* Estilo do conteúdo do modal */
+.modal-content {
+  background-color: #1e1e1e; /* Fundo escuro do conteúdo */
+  color: #e0e0e0; /* Texto claro */
+  border-radius: 0.5rem;
+  overflow: hidden;
+  max-width: 90vw; /* Largura máxima ajustada para o modal content */
+  max-height: 80vh; /* Altura máxima para evitar overflow vertical */
+}
+
+/* Estilo do cabeçalho do modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between; /* Espaçamento entre título e botão de fechamento */
+  align-items: center;
+  padding: 1rem;
+  background: #333; /* Fundo do cabeçalho */
+  border-bottom: 1px solid #444; /* Linha sutil na parte inferior */
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f5f5f5; /* Cor clara para o título */
+  text-align: center; /* Centraliza o texto */
+  flex: 1; /* Título ocupa o espaço restante */
+}
+
+/* Estilo do botão de fechamento */
+.close {
+  background: none;
+  border: none;
+  color: #f5f5f5;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: color 0.3s ease; /* Transição suave para a cor */
+  margin-left: 1rem; /* Espaçamento adicional do título */
+}
+
+.close:hover {
+  color: #ff3b3b; /* Cor vermelha ao passar o mouse */
+}
+
+/* Estilo do corpo do modal */
+.modal-body {
+  padding: 1.5rem;
+  overflow: hidden; /* Remove a rolagem lateral */
+}
+
+/* Estilo do rodapé do modal */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  background: #333; /* Fundo do rodapé */
+  border-top: 1px solid #444; /* Linha sutil na parte superior */
+}
+
+/* Estilo dos botões */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Transições suaves */
+}
+
+.btn-primary {
+  background-color: #007bff; /* Azul claro para o botão principal */
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Azul escuro ao passar o mouse */
+}
+
+.btn-secondary {
+  background-color: #6c757d; /* Cinza para o botão secundário */
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268; /* Cinza escuro ao passar o mouse */
+}
+
+/* Estilo das caixas de texto dentro do modal */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #e0e0e0; /* Texto claro para labels */
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #555; /* Borda escura para campos de entrada */
+  border-radius: 0.3rem;
+  background-color: #2c2c2c; /* Fundo escuro para os campos */
+  color: #e0e0e0; /* Texto claro */
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, background-color 0.3s ease; /* Transições suaves */
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #007bff; /* Cor da borda ao focar */
+  background-color: #333; /* Fundo mais escuro ao focar */
+  outline: none; /* Remove o contorno padrão */
+}
+
+/* Estilo do botão de envio */
+button[type="submit"] {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #fff;
+  background-color: #007bff; /* Azul claro para o botão de envio */
+  transition: background-color 0.3s ease; /* Transições suaves */
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3; /* Azul escuro ao passar o mouse */
+}
+
+/* Estilo da imagem de visualização */
+.img-preview {
+  width: 100%;
+  height: auto;
+  border-radius: 0.3rem;
+  border: 2px solid #444; /* Borda escura para a imagem */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra para a imagem */
+}
+
+.profile-image-edit-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.profile-image-edit-container .profile-image-preview {
+  width: 120px; /* Ajuste o tamanho do círculo */
+  height: 120px;
+  border-radius: 50%; /* Torna a imagem circular */
+  border: 2px solid #555; /* Borda escura */
+  background-color: #333; /* Fundo escuro quando não há imagem */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.profile-image-edit-container .profile-image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Mantém a imagem proporcional dentro do círculo */
+}
+
+.profile-image-edit-container .change-photo-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.3rem;
+  background-color: #007bff; /* Azul claro para o botão */
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Transição suave para a cor */
+}
+
+.profile-image-edit-container .change-photo-btn:hover {
+  background-color: #0056b3; /* Azul escuro ao passar o mouse */
+}
+
+.profile-image-edit-container .change-photo-btn:focus {
+  outline: none; /* Remove o contorno ao focar */
+}
+
+/* Remover a barra de rolagem no Webkit (Chrome, Safari) */
+textarea::-webkit-scrollbar {
+  display: none;
+}
+
+.warning-message {
+  color: #f0ad4e; /* Amarelo para aviso */
+  background-color: #1e1e1e; /* Fundo leve para destacar */
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.error-message {
+  color: #d9534f; /* Vermelho para erros */
+  margin-top: 5px;
+  font-size: 0.875em; /* Tamanho de fonte menor para erros */
+}
+
+/* Estilos para a seção de comentários */
+.comments-section {
+  margin: 20px 0; /* Margem superior e inferior */
+  padding: 15px; /* Espaçamento interno */
+  border-radius: 8px; /* Bordas arredondadas */
+  background-color: #333; /* Cor de fundo da seção para contraste */
+}
+
+.comments-section .section-title {
+  font-size: 1.5em; /* Tamanho da fonte do título */
+  color: #fff; /* Cor do texto do título em branco */
+  margin-bottom: 15px; /* Espaçamento abaixo do título */
+}
+
+.comments-section .content-list {
+  list-style-type: none; /* Remove os marcadores da lista */
+  padding: 0; /* Remove o preenchimento da lista */
+}
+
+.comments-section .comment-item {
+  margin-bottom: 10px; /* Espaçamento entre os itens da lista */
+  padding: 10px; /* Espaçamento interno dos itens */
+  background-color: #444; /* Cor de fundo dos itens, levemente mais claro */
+  border-radius: 5px; /* Bordas arredondadas para os itens */
+  transition: box-shadow 0.3s ease; /* Transição suave para o efeito de sombra */
+}
+
+.comments-section .comment-item:hover {
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); /* Efeito de sombra ao passar o mouse */
+}
+
+.comments-section .comment-container {
+  display: flex; /* Alinha a imagem e o texto lado a lado */
+  align-items: flex-start; /* Alinhamento ao topo */
+}
+
+.comments-section .comment-profile-picture {
+  margin-right: 10px; /* Espaçamento à direita da imagem */
+}
+
+.comments-section .profile-picture-circle {
+  width: 50px; /* Largura da imagem de perfil */
+  height: 50px; /* Altura da imagem de perfil */
+  border-radius: 50%; /* Torna a imagem redonda */
+  border: 2px solid #888; /* Borda cinza ao redor da imagem */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Sombra sutil ao redor da imagem */
+}
+
+.comments-section .comment-content {
+  color: white; /* Cor do texto do conteúdo do comentário */
+  flex: 1; /* Permite que o conteúdo ocupe o espaço restante */
+}
+
+.comments-section .comment-timestamp {
+  color: #bbb; /* Cor do texto do timestamp, para um contraste mais suave */
+  font-size: 0.9em; /* Tamanho da fonte do timestamp */
+}
+
+.comments-section .comment-text {
+  margin-top: 5px; /* Espaçamento acima do texto do comentário */
+}
+
+/* CSS DO COMENTÁRIOS */
+
+/* Estilo dos textos dentro das listas */
+.content-display li {
+  font-size: 1em;
+}
+
+.content-display li:last-child {
+  margin-bottom: 0;
+}
+
+/* Exemplo de margem na biografia */
+.profile-bio {
+  margin-bottom: 20px; /* Aumenta o espaço abaixo da biografia */
+}
+
+
+/* Estilo para o container das ações do perfil */
+.profile-actions {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente as ações */
+  gap:20rem; /* Aumenta o espaço entre os itens */
+  margin-top: 20px;
+  padding: 10px; /* Adiciona um padding */
+  width: 100%; /* Garante que a div ocupe 100% da largura disponível */
+  overflow: visible; /* Permite que os ícones apareçam mesmo se excederem a div */
+  box-sizing: border-box; /* Garante que o padding não afete a largura total */
+}
+
+/* Estilo para os botões ou links dentro do profile-actions */
+.profile-actions button,
+.profile-actions a {
+  background: none; /* Remove o background */
+  color: white; /* Deixa o ícone branco */
+  padding: 10px; /* Ajusta o padding */
+  text-decoration: none;
+  border: none; /* Remove as bordas */
+  cursor: pointer;
+  transition: color 0.3s ease, border-bottom 0.3s ease; /* Transição suave ao passar ou selecionar */
+  position: relative;
+  display: flex; /* Usar flex para garantir que o conteúdo centralize corretamente */
+  align-items: center; /* Alinha ícones verticalmente no centro */
+  justify-content: center; /* Centraliza horizontalmente os ícones */
+  height: auto; /* Permite que a altura seja automática */
+  width: auto; /* Permite que a largura seja automática */
+  min-width: 50px; /* Definindo uma largura mínima para os botões */
+}
+
+/* Estilo para os ícones dentro de botões */
+.profile-actions mat-icon {
+  font-size: 2.5rem !important; /* Aumenta o tamanho do ícone */
+  height: auto; /* Permite que a altura do ícone seja automática */
+  width: auto; /* Permite que a largura do ícone seja automática */
+}
+
+/* Efeito de barra sublinhada ao selecionar um ícone */
+.profile-actions button::after,
+.profile-actions a::after {
+  content: ''; /* Elemento decorativo */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px; /* Altura da barra */
+  background-color: white; /* Cor branca da barra sublinhada */
+  transform: scaleX(0); /* Esconde inicialmente */
+  transition: transform 0.3s ease; /* Transição suave da barra */
+}
+
+/* Quando o ícone é selecionado, a barra sublinhada aparece */
+.profile-actions button.active::after,
+.profile-actions a.active::after {
+  transform: scaleX(1); /* Mostra a barra ao selecionar */
+}
+
+/* Efeito de hover para mudar a cor do ícone */
+.profile-actions button:hover,
+.profile-actions a:hover {
+  color: #ccc; /* Leve mudança na cor do ícone ao passar o mouse */
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 600px) {
+  .profile-actions {
+    /* Removido flex-direction: column para manter os ícones em linha */
+    align-items: center; /* Centraliza os ícones verticalmente, se necessário */
+    flex-wrap: wrap; /* Permite que os ícones quebrem para a próxima linha, se necessário */
+    gap: 40px; /* Ajusta o espaço entre os ícones para dispositivos móveis */
+  }
+
+  .profile-actions button,
+  .profile-actions a {
+    padding: 5px; /* Ajusta o padding para dispositivos móveis */
+    min-width: auto; /* Remove a largura mínima para botões em dispositivos móveis */
+  }
+
+  .action-icon {
+    font-size: 20px; /* Ajusta o tamanho dos ícones em dispositivos móveis */
+  }
+}
+
+
+/* CODIGO NOVO DE CSS */
+
+/* CODIGO NOVO DE CSS */
+
+.likes-section {
+  padding: 16px;
+  border-radius: 8px; /* Bordas arredondadas */
+}
+
+.likes-section-title {
+  font-size: 1.5rem; /* Tamanho da fonte para o título */
+  margin-bottom: 12px; /* Margem inferior */
+  color: white; /* Letras brancas */
+}
+
+.likes-list {
+  list-style: none; /* Remove marcadores de lista */
+  padding: 0; /* Remove padding padrão */
+  margin: 0; /* Remove margem padrão */
+  max-height: 300px; /* Define uma altura máxima para a lista */
+  overflow-y: auto; /* Habilita a rolagem vertical se o conteúdo exceder a altura */
+}
+
+/* Estilo da barra de rolagem */
+.likes-list::-webkit-scrollbar {
+  width: 8px; /* Largura da barra de rolagem */
+}
+
+.likes-list::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Cor do fundo da trilha da barra de rolagem */
+  border-radius: 10px; /* Cantos arredondados para a trilha */
+}
+
+.likes-list::-webkit-scrollbar-thumb {
+  background: #ccc; /* Cor do "polegar" da barra de rolagem */
+  border-radius: 10px; /* Cantos arredondados para o polegar */
+}
+
+.likes-list::-webkit-scrollbar-thumb:hover {
+  background: #aaa; /* Cor do "polegar" ao passar o mouse */
+}
+
+/*CODIGO CSS DO LIKES */
+
+.likes-section {
+  margin: 20px 0; /* Margem superior e inferior */
+  padding: 15px; /* Espaçamento interno */
+  border-radius: 8px; /* Bordas arredondadas */
+  background-color: #333; /* Cor de fundo da seção para contraste */
+}
+
+.likes-section .section-title {
+  font-size: 1.5em; /* Tamanho da fonte do título */
+  color: #fff; /* Cor do texto do título em branco */
+  margin-bottom: 15px; /* Espaçamento abaixo do título */
+}
+
+.likes-section .likes-list {
+  list-style-type: none; /* Remove os marcadores da lista */
+  padding: 0; /* Remove o preenchimento da lista */
+}
+
+.likes-section .likes-item {
+  margin-bottom: 10px; /* Espaçamento entre os itens da lista */
+  padding: 10px; /* Espaçamento interno dos itens */
+  background-color: #444; /* Cor de fundo dos itens, levemente mais claro */
+  border-radius: 5px; /* Bordas arredondadas para os itens */
+  transition: box-shadow 0.3s ease; /* Transição suave para o efeito de sombra */
+}
+
+.likes-section .likes-item:hover {
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); /* Efeito de sombra ao passar o mouse */
+}
+
+.likes-section .likes-header {
+  display: flex; /* Alinha a imagem e o nome de usuário lado a lado */
+  align-items: center; /* Centraliza verticalmente a imagem e o nome */
+  margin-bottom: 5px; /* Espaçamento abaixo do cabeçalho */
+}
+
+.likes-section .likes-profile-picture {
+  width: 50px; /* Largura da imagem de perfil */
+  height: 50px; /* Altura da imagem de perfil */
+  border-radius: 50%; /* Torna a imagem redonda */
+  margin-right: 10px; /* Espaçamento à direita da imagem */
+  border: 2px solid #888; /* Borda cinza mais escura ao redor da imagem */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Sombra sutil ao redor da imagem */
+}
+
+.likes-section .likes-username {
+  font-weight: bold; /* Destaca o nome de usuário */
+  color: #fff; /* Cor do texto do nome de usuário em branco */
+  font-size: 1.2em; /* Aumenta o tamanho da fonte do nome de usuário */
+}
+
+.likes-section .likes-content {
+  color: white; /* Cor do texto do conteúdo do post */
+  margin-top: 10px; /* Espaçamento acima do conteúdo do post */
+}
+
+.likes-section .likes-timestamp {
+  color: #bbb; /* Cor do texto do timestamp, para um contraste mais suave */
+  font-size: 0.9em; /* Tamanho da fonte do timestamp */
+}
+
+/*CODIGO CSS DO LIKES */
+
+/* CODIGO NOVO DO PROFILE */
+
+.favorites-section {
+  margin: 20px 0; /* Margem superior e inferior */
+  padding: 15px; /* Espaçamento interno */
+  border-radius: 8px; /* Bordas arredondadas */
+  background-color: #333; /* Cor de fundo da seção para contraste */
+}
+
+.favorites-section .section-title {
+  font-size: 1.5em; /* Tamanho da fonte do título */
+  color: #fff; /* Cor do texto do título em branco */
+  margin-bottom: 15px; /* Espaçamento abaixo do título */
+}
+
+.favorites-section .content-list {
+  list-style-type: none; /* Remove os marcadores da lista */
+  padding: 0; /* Remove o preenchimento da lista */
+}
+
+.favorites-section .content-item {
+  margin-bottom: 10px; /* Espaçamento entre os itens da lista */
+  padding: 10px; /* Espaçamento interno dos itens */
+  background-color: #444; /* Cor de fundo dos itens, levemente mais claro */
+  border-radius: 5px; /* Bordas arredondadas para os itens */
+  transition: box-shadow 0.3s ease; /* Transição suave para o efeito de sombra */
+}
+
+.favorites-section .content-item:hover {
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); /* Efeito de sombra ao passar o mouse */
+}
+
+.favorites-section .content-header {
+  display: flex; /* Alinha a imagem e o nome de usuário lado a lado */
+  align-items: center; /* Centraliza verticalmente a imagem e o nome */
+  margin-bottom: 5px; /* Espaçamento abaixo do cabeçalho */
+}
+
+.favorites-section .profile-picture {
+  width: 50px; /* Largura da imagem de perfil */
+  height: 50px; /* Altura da imagem de perfil */
+  border-radius: 50%; /* Torna a imagem redonda */
+  margin-right: 10px; /* Espaçamento à direita da imagem */
+}
+
+.favorites-section .username {
+  font-weight: bold; /* Destaca o nome de usuário */
+  color: #fff; /* Cor do texto do nome de usuário em branco */
+}
+
+.favorites-section .post-content {
+  color: white; /* Cor do texto do conteúdo do post */
+  margin-top: 10px; /* Espaçamento acima do conteúdo do post */
+}
+
+
+/* CODIGO NOVO DO PROFILE */
+
+/* Media Query para telas com largura de 320px */
+@media (max-width: 320px) {
+  .profile-container {
+    padding: 10px;
+  }
+
+  /* Ajustar o profile-info-header para ficar inline */
+  .profile-info-header {
+    display: flex;
+    flex-direction: row; /* Garante que os itens fiquem lado a lado */
+    align-items: center; /* Alinha verticalmente os itens */
+    justify-content: space-between; /* Espaçamento entre os elementos, ajustável conforme necessário */
+    width: 100%;
+  }
+
+  .username-edit-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .username {
+    font-size: 20px;
+    margin-right: 10px;
+  }
+
+  .profile-stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .profile-stats span {
+    margin-bottom: 0;
+    margin-right: 10px;
+  }
+
+  .profile-info {
+    padding: 0;
+  }
+}
