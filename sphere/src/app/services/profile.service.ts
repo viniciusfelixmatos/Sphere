@@ -89,25 +89,29 @@ export class ProfileService {
     const token = this.getToken();
     
     if (!token) {
-      return throwError(() => new Error('Token não encontrado'));
+        console.warn('Token não encontrado. Atualização do perfil não pode ser realizada.');
+        return throwError(() => new Error('Token não encontrado'));
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     
     return this.http.put(`${this.baseUrl}/profile`, formData, { headers }).pipe(
-      map(() => {
-        this.getUserProfile().subscribe(profile => {
-          const profilePictureUrl = profile.profilePicture
-            ? `http://localhost:3000/uploads/${profile.profilePicture}`
-            : 'http://localhost:3000/uploads/default-profile.png';
-          this.profilePictureSubject.next(profilePictureUrl);
-        });
-      }),
-      catchError(error => {
-        return throwError(() => new Error('Erro ao atualizar o perfil do usuário'));
-      })
+        map(() => {
+            this.getUserProfile().subscribe(profile => {
+                const profilePictureUrl = profile.profilePicture
+                    ? `http://localhost:3000/uploads/${profile.profilePicture}`
+                    : 'http://localhost:3000/uploads/default-profile.png';
+                
+                this.profilePictureSubject.next(profilePictureUrl);
+            });
+        }),
+        catchError(error => {
+            return throwError(() => new Error('Erro ao atualizar o perfil do usuário'));
+        })
     );
   }
+
+
 
   getUsername(): Observable<string> {
     return this.getUserProfile().pipe(

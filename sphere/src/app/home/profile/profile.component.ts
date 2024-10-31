@@ -39,7 +39,7 @@ interface Post {
   favorites: boolean;        
   hasLiked: boolean;         
   timestamp: Date;           
-  profilePicture?: string; // Adicionei estas propriedades
+  profilePicture?: string; 
   userId?: number; 
   username?: string; 
 }
@@ -56,7 +56,7 @@ export class ProfileComponent implements OnInit {
 
   defaultProfilePicture = 'http://localhost:3000/uploads/default-profile.png';
   
-  src: string = this.defaultProfilePicture; // Propriedade src adicionada
+  src: string = this.defaultProfilePicture; 
 
   user: UserProfile = {
     id: 0,                     
@@ -97,8 +97,10 @@ export class ProfileComponent implements OnInit {
   }
 
   loadUserProfile() {
+    console.log('Loading user profile...');
     this.profileService.getUserProfile().subscribe(
       (profile: UserProfile) => {
+        console.log('User profile loaded:', profile);
         this.user = profile;
         this.profilePicture = profile.profilePicture || this.defaultProfilePicture;
         this.profilePicturePreview = this.profilePicture;
@@ -106,25 +108,31 @@ export class ProfileComponent implements OnInit {
         this.editedBio = profile.bio;
       },
       error => {
+        console.error('Error loading user profile:', error);
         this.errorMessage = 'Não foi possível carregar o perfil. Tente novamente mais tarde.';
       }
     );
   }
 
   loadUserLikes() {
+    console.log('Loading user likes...');
     this.profileService.getUserLikes().subscribe(
       (likes: Post[]) => {
-        this.likedPosts = likes; // Apenas atribui os posts retornados diretamente
+        console.log('User likes loaded:', likes);
+        this.likedPosts = likes; 
       },
       error => {
+        console.error('Error loading user likes:', error);
         this.errorMessage = 'Não foi possível carregar os posts curtidos. Tente novamente mais tarde.';
       }
     );
   }
 
   loadUserComments() {
+    console.log('Loading user comments...');
     this.profileService.getUserComments().subscribe(
       (comments: Comment[]) => {
+        console.log('User comments loaded:', comments);
         this.userComments = comments.map(comment => ({
           ...comment,
           username: comment.username || 'Usuário Desconhecido',
@@ -132,17 +140,21 @@ export class ProfileComponent implements OnInit {
         }));
       },
       error => {
+        console.error('Error loading user comments:', error);
         this.errorMessage = 'Não foi possível carregar os comentários. Tente novamente mais tarde.';
       }
     );
   }
 
   loadUserFavorites() {
+    console.log('Loading user favorites...');
     this.profileService.getUserFavorites().subscribe(
       (favorites: Post[]) => {
+        console.log('User favorites loaded:', favorites);
         this.favoritePosts = favorites;
       },
       error => {
+        console.error('Error loading user favorites:', error);
         this.errorMessage = 'Não foi possível carregar os favoritos. Tente novamente mais tarde.';
       }
     );
@@ -179,12 +191,16 @@ export class ProfileComponent implements OnInit {
 
     if (this.profilePicture instanceof File) {
       formData.append('profilePicture', this.profilePicture, this.profilePicture.name);
+      console.log('Profile picture is a file:', this.profilePicture.name);
     } else {
+      console.log('Profile picture is a URL:', this.profilePicture);
       formData.append('profilePicture', this.profilePicture);
     }
 
+    console.log('Saving profile changes:', formData);
     this.profileService.updateUserProfile(formData).subscribe(
       () => {
+        console.log('Profile updated successfully');
         this.user.username = this.editedUsername.trim();
         this.user.bio = this.editedBio.trim();
         this.user.profilePicture = this.profilePicture instanceof File ? this.profilePicturePreview : this.defaultProfilePicture;
@@ -192,6 +208,7 @@ export class ProfileComponent implements OnInit {
         this.loadUserProfile();
       },
       error => {
+        console.error('Error saving profile changes:', error);
         this.errorMessage = 'Não foi possível salvar as alterações. Tente novamente mais tarde.';
       }
     );
@@ -208,47 +225,54 @@ export class ProfileComponent implements OnInit {
   onProfilePictureChange(event: any) {
     const file = event.target.files[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        this.errorMessage = 'O arquivo deve ser menor que 5MB.';
-        event.target.value = '';
-        return;
-      }
+        console.log('Selected file for profile picture:', file.name, 'Size:', file.size);
 
-      const validFormats = ['image/jpeg', 'image/png'];
-      if (!validFormats.includes(file.type)) {
-        this.errorMessage = 'Formato inválido! Por favor, escolha uma imagem em formato JPG ou PNG.';
-        event.target.value = '';
-        return;
-      }
-
-      const img = new Image();
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        img.src = e.target?.result as string;
-      };
-
-      img.onload = () => {
-        const width = img.width;
-        const height = img.height;
-
-        if (width > 800 || height > 600) {
-          this.errorMessage = 'A imagem deve ter dimensões menores que 800x600 pixels.';
-          event.target.value = '';
-        } else {
-          this.profilePicture = file;
-          this.profilePicturePreview = URL.createObjectURL(file);
-          this.errorMessage = null;
+        // Alterado de 5MB para 10MB
+        if (file.size > 10 * 1024 * 1024) {
+            this.errorMessage = 'O arquivo deve ser menor que 10MB.';
+            event.target.value = '';
+            return;
         }
-      };
 
-      reader.readAsDataURL(file);
+        const validFormats = ['image/jpeg', 'image/png'];
+        if (!validFormats.includes(file.type)) {
+            this.errorMessage = 'Formato inválido! Por favor, escolha uma imagem em formato JPG ou PNG.';
+            event.target.value = '';
+            return;
+        }
+
+        const img = new Image();
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            img.src = e.target?.result as string;
+        };
+
+        img.onload = () => {
+            const width = img.width;
+            const height = img.height;
+
+            console.log('Image dimensions:', width, height);
+            // Alterado de 800x600 para 1200x800
+            if (width > 1200 || height > 800) {
+                this.errorMessage = 'A imagem deve ter dimensões menores que 1200x800 pixels.';
+                event.target.value = '';
+            } else {
+                this.profilePicture = file;
+                this.profilePicturePreview = URL.createObjectURL(file);
+                this.errorMessage = null;
+                console.log('Profile picture selected and preview set:', this.profilePicturePreview);
+            }
+        };
+
+        reader.readAsDataURL(file);
     }
   }
 
+
   // Método para registrar o post clicado
   logPost(post: Post) {
-    // Adicione qualquer outra lógica que você desejar ao clicar no post
+    console.log('Post clicked:', post);
   }
 
   // Métodos para alternar o conteúdo de likes, comentários e favoritos
@@ -257,6 +281,7 @@ export class ProfileComponent implements OnInit {
     this.showCommentsContent = false;
     this.showFavoritesContent = false;
     this.activeTab = 'likes'; // Atualiza a aba ativa
+    console.log('Showing likes content');
   }
 
   showComments() {
@@ -264,6 +289,7 @@ export class ProfileComponent implements OnInit {
     this.showCommentsContent = true;
     this.showFavoritesContent = false;
     this.activeTab = 'comments'; // Atualiza a aba ativa
+    console.log('Showing comments content');
   }
 
   showFavorites() {
@@ -271,5 +297,6 @@ export class ProfileComponent implements OnInit {
     this.showCommentsContent = false;
     this.showFavoritesContent = true;
     this.activeTab = 'favorites'; // Atualiza a aba ativa
+    console.log('Showing favorites content');
   }
 }

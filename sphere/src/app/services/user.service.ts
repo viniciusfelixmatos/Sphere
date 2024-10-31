@@ -33,7 +33,7 @@ export class UserService {
   setCurrentUser(user: User): void {
     this.currentUserSubject.next(user);
   }
-
+  
   getCurrentUser(): User {
     return this.currentUserSubject.value;
   }
