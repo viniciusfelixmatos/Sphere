@@ -1,11 +1,22 @@
 # 🌐 SPHERE
 
+![Capa do Projeto](prints/sphere.png)
+
 Este projeto é uma rede social que permite que os usuários criem postagens, comentem, curtam e sigam uns aos outros.
 
 ## 📜 Sumário
 
 - [🌐 SPHERE](#-sphere)
   - [📜 Sumário](#-sumário)
+  - [Componentes do Projeto](#componentes-do-projeto)
+    - [Tela de Login](#tela-de-login)
+    - [Tela de Registro](#tela-de-registro)
+    - [Homepage](#homepage)
+    - [Componente de Post](#componente-de-post)
+    - [Componente de Perfil](#componente-de-perfil)
+    - [Modal de Edição de Perfil](#modal-de-edição-de-perfil)
+    - [Modal de Criação de Post](#modal-de-criação-de-post)
+    - [Funcionalidades em Desenvolvimento](#funcionalidades-em-desenvolvimento)
   - [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
     - [💻 Frontend](#-frontend)
     - [🌐 Backend](#-backend)
@@ -18,6 +29,40 @@ Este projeto é uma rede social que permite que os usuários criem postagens, co
   - [🚀 Instalação](#-instalação)
     - [📋 Pré-requisitos](#-pré-requisitos)
     - [🔧 Configuração do Frontend](#-configuração-do-frontend)
+
+## Componentes do Projeto
+
+### Tela de Login
+![Tela de Login](prints/teladelogin.png)
+A tela de login permite que os usuários insiram suas credenciais para acessar suas contas.
+
+### Tela de Registro
+![Tela de Registro](prints/teladeregistro.png)
+Esta tela permite que novos usuários criem uma conta fornecendo informações básicas, como nome de usuário e senha.
+
+### Homepage
+![Homepage](prints/homepage.png)
+A homepage é onde os usuários podem visualizar postagens de outros usuários, interagir com o conteúdo e explorar novas postagens.
+
+### Componente de Post
+![Componente de Post](prints/componentepost.png)
+Este componente exibe uma postagem específica, incluindo texto, imagens, comentários e botões para curtir e compartilhar.
+
+### Componente de Perfil
+![Componente de Perfil](prints/perfilcomponente.png)
+O componente de perfil mostra as informações do usuário, incluindo bio, imagem de perfil, e suas postagens.
+
+### Modal de Edição de Perfil
+![Modal de Edição de Perfil](prints/editprofilemodal.png)
+Este modal permite que os usuários atualizem suas informações de perfil, como nome de usuário e bio.
+
+### Modal de Criação de Post
+![Modal de Criação de Post](prints/createpostmodal.png)
+Neste modal, os usuários podem criar novas postagens, adicionando texto, imagens e outros conteúdos.
+
+### Funcionalidades em Desenvolvimento
+![Funcionalidades em Desenvolvimento](prints/funçõesdevelop.png)
+Esta imagem mostra as funcionalidades que estão sendo desenvolvidas, incluindo melhorias na usabilidade e novos recursos planejados.
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -88,5 +133,5 @@ O backend é construído com Node.js e Express, servindo como a API para o front
 
 1. Clone o repositório:
    ```bash
-   git clone <URL_DO_REPOSITORIO>
-   cd <NOME_DA_PASTA>
+   git clone https://github.com/viniciusfelixmatos/Sphere
+   cd Sphere
