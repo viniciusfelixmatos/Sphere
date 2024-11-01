@@ -25,7 +25,6 @@ Este projeto é uma rede social que permite que os usuários criem postagens, co
 
 - **Angular**: Framework usado para construir a interface do usuário.
 - **Angular Material**: Biblioteca de componentes UI.
-- **Tailwind CSS**: Framework CSS utilizado para estilização.
 - **TypeScript**: Linguagem de programação utilizada para desenvolvimento.
 
 ### 🌐 Backend
