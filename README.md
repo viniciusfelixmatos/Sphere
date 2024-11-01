@@ -46,22 +46,22 @@ A homepage é onde os usuários podem visualizar postagens de outros usuários, 
 
 ### Componente de Post
 ![Componente de Post](prints/componentepost.png)
-Este componente exibe uma postagem específica, incluindo texto, imagens, comentários e botões para curtir e compartilhar.
+Este componente exibe uma postagem específica, incluindo texto e comentários, além dos botões para curtir.
 
 ### Componente de Perfil
 ![Componente de Perfil](prints/perfilcomponente.png)
-O componente de perfil mostra as informações do usuário, incluindo bio, imagem de perfil, e suas postagens.
+O componente de perfil mostra as informações do usuário, incluindo a bio, imagem de perfil, e suas postagens. Também exibe botões que permitem acessar as postagens que o usuário curtiu, os comentários que ele fez e os posts que ele favoritou, além de mostrar o número de seguidores e seguindo.
 
 ### Modal de Edição de Perfil
 ![Modal de Edição de Perfil](prints/editprofilemodal.png)
-Este modal permite que os usuários atualizem suas informações de perfil, como nome de usuário e bio.
+Este modal permite que os usuários atualizem suas informações de perfil, como nome de usuário, bio e também a foto de perfil.
 
 ### Modal de Criação de Post
 ![Modal de Criação de Post](prints/createpostmodal.png)
-Neste modal, os usuários podem criar novas postagens, adicionando texto, imagens e outros conteúdos.
+Neste modal, os usuários podem criar novas postagens, adicionando texto, mas atualmente não é possível adicionar imagens.
 
 ### Funcionalidades em Desenvolvimento
-![Funcionalidades em Desenvolvimento](prints/funçõesdevelop.png)
+![Funcionalidades em Desenvolvimento](prints/funcionalidadesdevelop.png)
 Esta imagem mostra as funcionalidades que estão sendo desenvolvidas, incluindo melhorias na usabilidade e novos recursos planejados.
 
 ## 🛠️ Tecnologias Utilizadas
