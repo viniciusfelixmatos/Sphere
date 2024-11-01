@@ -19,13 +19,10 @@ Este projeto é uma rede social que permite que os usuários criem postagens, co
     - [Funcionalidades em Desenvolvimento](#funcionalidades-em-desenvolvimento)
   - [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
     - [💻 Frontend](#-frontend)
-    - [🌐 Backend](#-backend)
-  - [💻 Frontend](#-frontend-1)
-    - [⚙️ Funcionalidades](#️-funcionalidades)
-  - [🌐 Backend](#-backend-1)
+  - [🌐 Backend](#-backend)
     - [📁 Estrutura do Projeto](#-estrutura-do-projeto)
     - [🔗 Rotas Principais](#-rotas-principais)
-    - [⚙️ Funcionalidades](#️-funcionalidades-1)
+    - [⚙️ Funcionalidades](#️-funcionalidades)
   - [🚀 Instalação](#-instalação)
     - [📋 Pré-requisitos](#-pré-requisitos)
     - [🔧 Configuração do Frontend](#-configuração-do-frontend)
@@ -38,7 +35,7 @@ A tela de login permite que os usuários insiram suas credenciais para acessar s
 
 ### Tela de Registro
 ![Tela de Registro](prints/teladeregistro.png)
-Esta tela permite que novos usuários criem uma conta fornecendo informações básicas, como nome de usuário e senha.
+A tela de registro é onde os novos usuários são cadastrados no banco de dados, inserindo informações como "Email", "Username", "Password" e "Confirm Password". O sistema verifica se o e-mail já está em uso e, em caso negativo, a senha é armazenada de forma segura, utilizando um hash criptografado com a biblioteca bcrypt. Após o registro, o usuário é adicionado ao banco de dados com uma imagem de perfil definida por padrão.
 
 ### Homepage
 ![Homepage](prints/homepage.png)
@@ -46,7 +43,7 @@ A homepage é onde os usuários podem visualizar postagens de outros usuários, 
 
 ### Componente de Post
 ![Componente de Post](prints/componentepost.png)
-Este componente exibe uma postagem específica, incluindo texto e comentários, além dos botões para curtir.
+Este componente exibe uma postagem específica, incluindo os botões como curtir, comentários e o botão de favoritar.
 
 ### Componente de Perfil
 ![Componente de Perfil](prints/perfilcomponente.png)
@@ -71,30 +68,6 @@ Esta imagem mostra as funcionalidades que estão sendo desenvolvidas, incluindo 
 - **Angular**: Framework usado para construir a interface do usuário.
 - **Angular Material**: Biblioteca de componentes UI.
 - **TypeScript**: Linguagem de programação utilizada para desenvolvimento.
-
-### 🌐 Backend
-
-- **Node.js**: Ambiente de execução para JavaScript do lado do servidor.
-- **Express**: Framework para construir APIs web.
-- **MySQL**: Sistema de gerenciamento de banco de dados.
-- **jsonwebtoken**: Biblioteca para autenticação de tokens JWT.
-- **Multer**: Middleware para upload de arquivos.
-
-## 💻 Frontend
-
-O frontend do projeto é construído em Angular e possui as seguintes características:
-
-- **🧩 Estrutura do Projeto**: O projeto está dividido em componentes independentes, cada um responsável por uma parte da interface.
-- **🔌 Serviços**: Utiliza serviços para comunicação com o backend, como `ProfileService` para gerenciar as operações relacionadas ao perfil do usuário.
-- **🔄 Gerenciamento de Estado**: Os estados do aplicativo, como informações do perfil do usuário e postagens, são gerenciados localmente no componente.
-- **🔒 Autenticação**: O acesso a certas funcionalidades é protegido por autenticação de token.
-
-### ⚙️ Funcionalidades
-
-- **👤 Exibição do Perfil do Usuário**: Carrega e exibe informações do usuário, incluindo imagem de perfil, bio, número de seguidores e postagens.
-- **📝 Edição de Perfil**: Permite ao usuário editar seu nome de usuário, bio e imagem de perfil.
-- **💬 Interação com Postagens**: Exibe postagens curtidas, comentários feitos e postagens favoritas.
-- **📱 Responsividade**: O design é responsivo, adaptando-se a diferentes tamanhos de tela.
 
 ## 🌐 Backend
 
