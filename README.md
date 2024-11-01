@@ -59,7 +59,8 @@ Neste modal, os usuários podem criar novas postagens, adicionando texto, mas at
 
 ### Funcionalidades em Desenvolvimento
 ![Funcionalidades em Desenvolvimento](prints/funcionalidadesdevelop.png)
-Esta imagem mostra as funcionalidades que estão sendo desenvolvidas, incluindo melhorias na usabilidade e novos recursos planejados.
+Esta imagem mostra as funcionalidades que estão sendo desenvolvidas, como um novo componente responsável por realizar pesquisas de posts, outro componente que será responsável por mostrar notificações e, por último, um que será responsável por expandir a comunicação dos usuários, funcionando como um "chat" semelhante a outras redes sociais. Além disso, estou planejando melhorias na usabilidade e novos recursos utilizáveis.
+
 
 ## 🛠️ Tecnologias Utilizadas
 
