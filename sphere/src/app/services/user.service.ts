@@ -60,6 +60,11 @@ export class UserService {
       const payload = parts[1];
       const decodedPayload = JSON.parse(atob(payload)); // Usa atob para decodificar Base64
 
+      // Verifica a validade do token
+      if (!decodedPayload.userId) {
+        return of(null); // Se o payload não contiver um userId válido
+      }
+
       // Retorna o ID do usuário encapsulado em um Observable
       return of(decodedPayload.userId || null); // Retorna um Observable com o userId ou null
     }
@@ -72,7 +77,8 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/${userId}`, { headers: this.getHeaders() })
       .pipe(
         catchError(error => {
-          return throwError(error);
+          console.error('Erro ao buscar usuário por ID:', error);
+          return throwError(() => new Error('Falha ao obter informações do usuário.'));
         })
       );
   }
@@ -82,7 +88,8 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/follow`, { userId }, { headers: this.getHeaders() })
       .pipe(
         catchError(error => {
-          return throwError(error);
+          console.error('Erro ao seguir usuário:', error);
+          return throwError(() => new Error('Não foi possível seguir o usuário.'));
         })
       );
   }
@@ -92,7 +99,8 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/unfollow`, { userId }, { headers: this.getHeaders() })
       .pipe(
         catchError(error => {
-          return throwError(error);
+          console.error('Erro ao deixar de seguir usuário:', error);
+          return throwError(() => new Error('Não foi possível deixar de seguir o usuário.'));
         })
       );
   }
@@ -103,7 +111,8 @@ export class UserService {
       .pipe(
         map(response => response.isFollowing), // Extrai o valor booleano isFollowing
         catchError(error => {
-          return throwError(error);
+          console.error('Erro ao verificar se está seguindo:', error);
+          return throwError(() => new Error('Erro ao verificar se o usuário está seguindo.'));
         })
       );
   }

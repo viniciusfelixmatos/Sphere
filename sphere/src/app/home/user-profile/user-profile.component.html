@@ -1,14 +1,21 @@
-<div *ngIf="loading">Carregando...</div>
-<div *ngIf="error">{{ error }}</div>
-<div *ngIf="!loading && !error">
+<div *ngIf="loading" class="loading-message">Carregando...</div>
+
+<div *ngIf="errorMessage" class="error-message">
+  <p>{{ errorMessage }}</p>
+</div>
+
+<div *ngIf="!loading && !errorMessage">
   <!-- Profile Container -->
   <div class="profile-container">
     <div class="profile-header">
       <!-- Profile Image Section -->
       <div class="profile-image-container">
-        <img class="profile-picture" 
-             [src]="user.profilePicture ? 'http://localhost:3000/uploads/' + user.profilePicture : 'http://localhost:3000/uploads/default-profile.png'" 
-             alt="Foto de Perfil de {{ user.username }}">
+        <img 
+          class="profile-picture" 
+          [src]="user.profilePicture ? 'http://localhost:3000/uploads/' + user.profilePicture : 'http://localhost:3000/uploads/default-profile.png'" 
+          alt="Foto de Perfil de {{ user.username }}"
+          onerror="this.onerror=null;this.src='http://localhost:3000/uploads/default-profile.png';" 
+        />
       </div>
     </div>
 
@@ -30,10 +37,13 @@
     </div>
 
     <!-- Follow Button -->
-    <!-- Follow Button -->
-<button *ngIf="user.id !== loggedInUserId" class="follow-button" (click)="followUser()" [disabled]="loading || error">
-{{ user.isFollowing ? 'Deixar de Seguir' : 'Seguir' }}
-</button>
-
+    <button 
+      *ngIf="user.id !== loggedInUserId" 
+      class="follow-button" 
+      (click)="followUser()" 
+      [disabled]="loading || errorMessage"
+    >
+      {{ user.isFollowing ? 'Deixar de Seguir' : 'Seguir' }}
+    </button>
   </div>
 </div>

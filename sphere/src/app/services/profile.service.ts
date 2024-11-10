@@ -53,22 +53,34 @@ export class ProfileService {
 
   constructor(private http: HttpClient) {}
 
+  // Função para obter o token de forma centralizada
+  // Alteração do método para public
   public getToken(): string | null {
     const token = localStorage.getItem('token');
     if (!token) {
-      console.warn('Token não encontrado no localStorage');
+    console.warn('Token não encontrado no localStorage');
     }
     return token;
   }
 
+
+  // Função para obter cabeçalhos com token de autenticação
+  private getHeaders(): HttpHeaders {
+    const token = this.getToken();
+    if (!token) {
+      throw new Error('Token não encontrado');
+    }
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
+  // Obter o perfil do usuário
   getUserProfile(): Observable<UserProfile> {
     const token = this.getToken();
-
     if (!token) {
       return throwError(() => new Error('Token não encontrado'));
     }
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const headers = this.getHeaders();
 
     return this.http.get<UserProfile>(`${this.baseUrl}/profile`, { headers }).pipe(
       map((profile: UserProfile) => {
@@ -80,52 +92,55 @@ export class ProfileService {
         return profile;
       }),
       catchError(error => {
+        console.error('Erro ao carregar o perfil do usuário', error);
         return throwError(() => new Error('Erro ao carregar o perfil do usuário'));
       })
     );
   }
 
+  // Atualizar o perfil do usuário
   updateUserProfile(formData: FormData): Observable<any> {
     const token = this.getToken();
     
     if (!token) {
-        console.warn('Token não encontrado. Atualização do perfil não pode ser realizada.');
-        return throwError(() => new Error('Token não encontrado'));
+      console.warn('Token não encontrado. Atualização do perfil não pode ser realizada.');
+      return throwError(() => new Error('Token não encontrado'));
     }
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const headers = this.getHeaders();
     
     return this.http.put(`${this.baseUrl}/profile`, formData, { headers }).pipe(
-        map(() => {
-            this.getUserProfile().subscribe(profile => {
-                const profilePictureUrl = profile.profilePicture
-                    ? `http://localhost:3000/uploads/${profile.profilePicture}`
-                    : 'http://localhost:3000/uploads/default-profile.png';
-                
-                this.profilePictureSubject.next(profilePictureUrl);
-            });
-        }),
-        catchError(error => {
-            return throwError(() => new Error('Erro ao atualizar o perfil do usuário'));
-        })
+      map(() => {
+        this.getUserProfile().subscribe(profile => {
+          const profilePictureUrl = profile.profilePicture
+            ? `http://localhost:3000/uploads/${profile.profilePicture}`
+            : 'http://localhost:3000/uploads/default-profile.png';
+          
+          this.profilePictureSubject.next(profilePictureUrl);
+        });
+      }),
+      catchError(error => {
+        console.error('Erro ao atualizar o perfil do usuário', error);
+        return throwError(() => new Error('Erro ao atualizar o perfil do usuário'));
+      })
     );
   }
 
-
-
+  // Obter o nome de usuário
   getUsername(): Observable<string> {
     return this.getUserProfile().pipe(
       map(profile => profile.username)
     );
   }
 
+  // Obter os posts do usuário
   getUserPosts(): Observable<Post[]> {
     const token = this.getToken();
     if (!token) {
       return throwError(() => new Error('Token não encontrado'));
     }
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const headers = this.getHeaders();
     
     return this.http.get<Post[]>(`${this.baseUrl}/posts`, { headers }).pipe(
       map(posts => {
@@ -144,18 +159,20 @@ export class ProfileService {
         });
       }),
       catchError(error => {
+        console.error('Erro ao carregar os posts do usuário', error);
         return throwError(() => new Error('Erro ao carregar os posts do usuário'));
       })
     );
   }
 
+  // Obter os likes do usuário
   getUserLikes(): Observable<Post[]> {
     const token = this.getToken();
     if (!token) {
         return throwError(() => new Error('Token não encontrado'));
     }
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const headers = this.getHeaders();
 
     return this.http.get<Post[]>(`${this.baseUrl}/likes`, { headers }).pipe(
       map(posts => {
@@ -176,18 +193,20 @@ export class ProfileService {
         });
       }),
       catchError(error => {
+        console.error('Erro ao carregar os likes do usuário', error);
         return throwError(() => new Error('Erro ao carregar os likes do usuário'));
       })
     );
   }
 
+  // Obter os comentários do usuário
   getUserComments(): Observable<Comment[]> {
     const token = this.getToken();
     if (!token) {
       return throwError(() => new Error('Token não encontrado'));
     }
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const headers = this.getHeaders();
     
     return this.http.get<Comment[]>(`${this.baseUrl}/comments`, { headers }).pipe(
       map(comments => {
@@ -197,18 +216,20 @@ export class ProfileService {
         }));
       }),
       catchError(error => {
+        console.error('Erro ao carregar os comentários do usuário', error);
         return throwError(() => new Error('Erro ao carregar os comentários do usuário'));
       })
     );
   }
 
+  // Obter os posts favoritos do usuário
   getUserFavorites(): Observable<Post[]> {
     const token = this.getToken();
     if (!token) {
       return throwError(() => new Error('Token não encontrado'));
     }
   
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const headers = this.getHeaders();
     
     return this.http.get<Post[]>(`${this.baseUrl}/favorites`, { headers }).pipe(
       map(favorites => {
@@ -229,6 +250,7 @@ export class ProfileService {
         });
       }),
       catchError(error => {
+        console.error('Erro ao carregar os favoritos do usuário', error);
         return throwError(() => new Error('Erro ao carregar os favoritos do usuário'));
       })
     );
