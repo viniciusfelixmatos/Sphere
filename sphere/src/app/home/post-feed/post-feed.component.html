@@ -3,7 +3,7 @@
     <div *ngFor="let post of posts" class="post">
       <div class="post-header">
         <img *ngIf="post.user" 
-             [src]="'http://localhost:3000/uploads/' + (post.user.profilePicture || 'assets/default-profile.png')" 
+             [src]="getProfilePictureUrl(post.user.profilePicture)" 
              alt="Profile Picture" 
              class="profile-pic" />
 
@@ -22,6 +22,7 @@
       </div>
 
       <div class="post-actions">
+        <!-- Alteração no evento de clique para passar o objeto post -->
         <button 
           (click)="likePost(post)" 
           [ngClass]="{'liked': post.hasLiked}" 
@@ -39,10 +40,11 @@
           <mat-icon>{{ post.favorites ? 'bookmark' : 'bookmark_border' }}</mat-icon>
         </button>
       </div>
-      
+
+      <!-- Exibição de comentários -->
       <div class="post-comments" *ngIf="post.comments && post.comments.length > 0">
         <div *ngFor="let comment of post.comments.slice(0, post.showAllComments ? post.comments.length : 3)" class="comment">
-          <img [src]="getProfilePictureUrl(post.user.profilePicture)" alt="{{ post.user.username }}'s profile picture" class="comment-profile-pic"/>
+          <img [src]="getProfilePictureUrl(comment.user.profilePicture)" alt="{{ comment.user.username }}'s profile picture" class="comment-profile-pic"/>
           <div class="comment-content">
             <strong>{{ comment.user.username || 'Comentador Desconhecido' }}</strong> {{ comment.text }}
           </div>
@@ -53,9 +55,10 @@
         </button>
       </div>
 
+      <!-- Seção de adicionar comentário -->
       <div *ngIf="post.isCommenting" class="post-comment-section">
         <input [(ngModel)]="post.newComment" placeholder="Escreva um comentário" />
-        <button (click)="addComment(post, post.newComment)">
+        <button (click)="addComment(post, post.newComment ?? '')">
           <mat-icon>send</mat-icon>
         </button>
       </div>

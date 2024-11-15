@@ -13,7 +13,7 @@
         <img 
           class="profile-picture" 
           [src]="user.profilePicture ? 'http://localhost:3000/uploads/' + user.profilePicture : 'http://localhost:3000/uploads/default-profile.png'" 
-          alt="Foto de Perfil de {{ user.username }}"
+          alt="Foto de Perfil de {{ user.username }}" 
           onerror="this.onerror=null;this.src='http://localhost:3000/uploads/default-profile.png';" 
         />
       </div>
@@ -34,16 +34,16 @@
     
     <div class="profile-bio">
       <p>{{ user.bio }}</p>
+      <div *ngIf="showFollowButton">
+        <button 
+          (click)="followUser()" 
+          [disabled]="followLoading" 
+          [ngClass]="{'clicked': isClicked}" 
+          class="follow-button">
+          <span *ngIf="followLoading">Processando...</span>
+          <span *ngIf="!followLoading">{{ user.isFollowing ? 'Deixar de Seguir' : 'Seguir' }}</span>
+        </button>
+      </div>
     </div>
-
-    <!-- Follow Button -->
-    <button 
-      *ngIf="user.id !== loggedInUserId" 
-      class="follow-button" 
-      (click)="followUser()" 
-      [disabled]="loading || errorMessage"
-    >
-      {{ user.isFollowing ? 'Deixar de Seguir' : 'Seguir' }}
-    </button>
   </div>
 </div>

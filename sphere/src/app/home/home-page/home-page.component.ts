@@ -5,7 +5,8 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PostService } from '../../services/post.service';
-import { ProfileService } from '../../services/profile.service';
+import { AuthService } from '../../services/auth.service';  // Importa o AuthService
+import { ProfileService } from '../../services/profile.service';  // Importa o ProfileService
 
 @Component({
   selector: 'app-home-page',
@@ -31,20 +32,22 @@ export class HomePageComponent implements OnInit {
   constructor(
     private router: Router, 
     private postService: PostService,
-    private profileService: ProfileService
+    private authService: AuthService,  // Injeta o AuthService
+    private profileService: ProfileService  // Injeta o ProfileService
   ) {}
 
   ngOnInit() {
     this.loadUserProfile();
-    this.postService.fetchPosts();
+    this.postService.getPosts();
   }
 
   loadUserProfile() {
-    const token = this.profileService.getToken();
+    const token = this.authService.getToken();  // Usa o AuthService para obter o token
     if (!token) {
       return;
     }
 
+    // Agora usa o profileService corretamente para obter o perfil
     this.profileService.getUserProfile().subscribe(
       (profile: any) => {
         if (profile) {
@@ -58,6 +61,7 @@ export class HomePageComponent implements OnInit {
     );
   }
 
+  // Métodos de navegação e de modal
   navigateToHome() {
     this.router.navigate(['/home']);
   }
@@ -117,7 +121,7 @@ export class HomePageComponent implements OnInit {
         () => {
           this.postText = '';
           this.closeCreatePost();
-          this.postService.fetchPosts();
+          this.postService.getPosts();
         },
         () => {
           // Erro ao criar post não registrado no console

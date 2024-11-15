@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, of } from 'rxjs'; // Importando 'of' aqui
 import { map, catchError } from 'rxjs/operators';
 import { ProfileService } from './profile.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,11 @@ import { ProfileService } from './profile.service';
 export class AuthService {
   private baseUrl = 'http://localhost:3000/api/auth';
   private tokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(this.getToken());
-  
+
   constructor(
     private http: HttpClient,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   // Método para registrar um novo usuário
@@ -27,10 +29,11 @@ export class AuthService {
 
   // Método para fazer login
   login(email: string, password: string): Observable<any> {
-    return this.http.post<{ token: string }>(`${this.baseUrl}/login`, { email, password }).pipe(
+    return this.http.post<{ token: string, userId: string }>(`${this.baseUrl}/login`, { email, password }).pipe(
       map(response => {
         if (response && response.token) {
           this.setToken(response.token); // Usar o novo método setToken
+          this.setUserId(response.userId); // Armazenar o ID do usuário
         }
         return response;
       }),
@@ -62,14 +65,26 @@ export class AuthService {
 
   // Método para definir o token no localStorage
   setToken(token: string): void {
-    localStorage.setItem('token', token);
-    this.tokenSubject.next(token); // Atualiza o BehaviorSubject com o novo token
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('token', token);
+      this.tokenSubject.next(token); // Atualiza o BehaviorSubject com o novo token
+    }
   }
 
-  // Método para fazer logout e remover o token do localStorage
+  // Método para armazenar o ID do usuário no localStorage
+  private setUserId(userId: string): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('userId', userId); // Armazenar o userId no localStorage
+    }
+  }
+
+  // Método para fazer logout e remover o token e userId do localStorage
   logout(): void {
-    localStorage.removeItem('token');
-    this.tokenSubject.next(null); // Atualiza o BehaviorSubject para nulo
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId'); // Remover o userId também
+      this.tokenSubject.next(null); // Atualiza o BehaviorSubject para nulo
+    }
   }
 
   private getHeaders(): HttpHeaders {
@@ -80,18 +95,18 @@ export class AuthService {
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
+  // Método para obter o token
   getToken(): string | null {
-    return localStorage.getItem('token');
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('token');
+    }
+    return null; // Retorna null se não estiver no navegador
   }
 
   // Método para obter o ID do usuário logado
   getCurrentUserId(): Observable<string | null> {
-    return this.profileService.getUserProfile().pipe(
-      map(userProfile => userProfile ? userProfile.id.toString() : null),
-      catchError(error => {
-        return throwError(error);
-      })
-    );
+    const userId = localStorage.getItem('userId'); // Recupera o userId do localStorage
+    return userId ? of(userId) : throwError('Usuário não encontrado.'); // Retorna o userId ou erro se não encontrado
   }
 
   loadUserProfile() {

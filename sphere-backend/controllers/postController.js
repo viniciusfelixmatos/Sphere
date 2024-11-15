@@ -267,14 +267,14 @@ exports.toggleLike = async (req, res) => {
     const { postId } = req.params;
     const userId = req.user.id;
 
-    // Verificação: postId é obrigatório
     if (!postId) {
         console.log('Post ID é obrigatório.');
         return res.status(400).json({ message: 'Post ID é obrigatório.' });
     }
 
     try {
-        // Verificar se o usuário já curtiu o post
+        console.log(`Método HTTP recebido: ${req.method}`);
+        
         const checkLikeQuery = 'SELECT * FROM likes WHERE user_id = ? AND post_id = ?';
         const results = await new Promise((resolve, reject) => {
             db.query(checkLikeQuery, [userId, postId], (err, results) => {
@@ -284,33 +284,39 @@ exports.toggleLike = async (req, res) => {
         });
 
         if (results.length > 0) {
-            // Se já curtiu, remove o like
-            const deleteLikeQuery = 'DELETE FROM likes WHERE user_id = ? AND post_id = ?';
-            await new Promise((resolve, reject) => {
-                db.query(deleteLikeQuery, [userId, postId], (err) => {
-                    if (err) return reject(err);
-                    resolve();
+            if (req.method === 'DELETE') {
+                const deleteLikeQuery = 'DELETE FROM likes WHERE user_id = ? AND post_id = ?';
+                await new Promise((resolve, reject) => {
+                    db.query(deleteLikeQuery, [userId, postId], (err) => {
+                        if (err) return reject(err);
+                        resolve();
+                    });
                 });
-            });
-            console.log('Like removido com sucesso.');
-            return res.status(200).json({ message: 'Like removido com sucesso.' });
+                console.log('Like removido com sucesso.');
+                return res.status(200).json({ message: 'Like removido com sucesso.' });
+            }
         } else {
-            // Se não curtiu, adiciona o like
-            const insertLikeQuery = 'INSERT INTO likes (user_id, post_id) VALUES (?, ?)';
-            await new Promise((resolve, reject) => {
-                db.query(insertLikeQuery, [userId, postId], (err) => {
-                    if (err) return reject(err);
-                    resolve();
+            if (req.method === 'POST') {
+                const insertLikeQuery = 'INSERT INTO likes (user_id, post_id) VALUES (?, ?)';
+                await new Promise((resolve, reject) => {
+                    db.query(insertLikeQuery, [userId, postId], (err) => {
+                        if (err) return reject(err);
+                        resolve();
+                    });
                 });
-            });
-            console.log('Like adicionado com sucesso.');
-            return res.status(201).json({ message: 'Like adicionado com sucesso.' });
+                console.log('Like adicionado com sucesso.');
+                return res.status(201).json({ message: 'Like adicionado com sucesso.' });
+            }
         }
+
+        // Se a operação não foi atendida devido ao método incorreto
+        return res.status(405).json({ message: 'Método não permitido.' });
     } catch (err) {
         console.error('Erro ao alternar like:', err);
         return handleError(res, err, 'Erro ao alternar like.');
     }
 };
+
 
 // Adicionar comentário
 exports.addComment = async (req, res) => {

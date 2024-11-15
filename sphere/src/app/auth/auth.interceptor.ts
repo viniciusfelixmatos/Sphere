@@ -6,7 +6,6 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { HttpInterceptorFn } from '@angular/common/http';
 
-
 // Implementa o interceptor como uma função
 export const authInterceptor: HttpInterceptorFn = (
   req: HttpRequest<any>,
@@ -15,6 +14,7 @@ export const authInterceptor: HttpInterceptorFn = (
   const authService = inject(AuthService); // Injeta o AuthService
 
   const token = authService.getToken();
+;  // Usa o método público getTokenValue
 
   // Clone a requisição para adicionar o token ao cabeçalho
   let clonedRequest = req;

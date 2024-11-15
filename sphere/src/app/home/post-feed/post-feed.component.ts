@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { PostService } from '../../services/post.service';
 import { ProfileService } from '../../services/profile.service';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError, firstValueFrom } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface User {
   id: number;
@@ -32,8 +31,8 @@ interface Post {
   timestamp: Date;
   isCommenting?: boolean;
   hasLiked?: boolean;
-  showAllComments?: boolean; // Novo campo para controlar a exibição de comentários
-  newComment?: string; // Novo campo para armazenar o novo comentário
+  showAllComments?: boolean;
+  newComment?: string;
 }
 
 @Component({
@@ -44,217 +43,137 @@ interface Post {
   imports: [CommonModule, FormsModule, MatIconModule, RouterModule]
 })
 export class PostFeedComponent implements OnInit {
-  private apiUrl = 'http://localhost:3000/api/posts';
   posts$!: Observable<Post[]>;
   userProfile$!: Observable<User>;
-  newComment: string = ''; // Inicializa newComment como uma string vazia
 
   constructor(
     private postService: PostService,
     private profileService: ProfileService,
-    private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.loadPosts();
-    this.loadUserProfile();
-  }
-
-  loadPosts() {
-    this.posts$ = this.postService.posts$.pipe(
-      map((posts: Post[]) => {
-        if (!posts || posts.length === 0) {
-          return []; // Retorna um array vazio se não houver posts
-        }
-
-        return posts.map(post => {
-          return {
-            ...post,
-            user: this.getUserDetails(post.user),
-            comments: this.processComments(post.comments),
-            hasLiked: post.hasLiked || false,
-            showAllComments: false,
-            newComment: ''
-          };
-        });
-      }),
+    this.posts$ = this.postService.getPosts().pipe(
+      map(posts => posts.map(post => ({
+        ...post,
+        user: this.getUserDetails(post.user),
+        comments: this.processComments(post.comments),
+        hasLiked: post.hasLiked || false,
+        showAllComments: false,
+        newComment: '' // Garantir que newComment sempre tenha um valor (string)
+      }))),
       catchError(error => {
+        console.error('Error loading posts:', error);
         return of([]); // Retorna um array vazio em caso de erro
       })
     );
 
-    this.posts$.subscribe(posts => {
-      if (posts.length > 0) {
-        // Pode adicionar uma mensagem de sucesso aqui se desejar
-      } else {
-        // Pode adicionar uma mensagem de aviso aqui se desejar
-      }
-    });
+    this.userProfile$ = this.profileService.getUserProfile().pipe(
+      map(userProfile => ({
+        id: userProfile.id,
+        username: userProfile.username,
+        profilePicture: userProfile.profilePicture || 'assets/default-profile.png'
+      })),
+      catchError(error => {
+        console.error('Error loading user profile:', error);
+        return of({ id: 0, username: 'desconhecido', profilePicture: 'assets/default-profile.png' });
+      })
+    );
   }
 
-  private getUserDetails(user: any) {
+  private getUserDetails(user: any): User {
     return user?.username
       ? user
-      : {
-          id: 0,
-          username: 'desconhecido',
-          name: 'Usuário Desconhecido',
-          profilePicture: 'assets/default-profile.png',
-        };
+      : { id: 0, username: 'desconhecido', profilePicture: 'assets/default-profile.png' };
   }
 
-  private processComments(comments: any[]) {
+  private processComments(comments: any[]): Comment[] {
     return comments?.map(comment => ({
       ...comment,
       user: this.getUserDetails(comment.user),
-    })) || []; // Retorna um array vazio se não houver comentários
-  }
-
-  loadUserProfile() {
-    this.userProfile$ = this.profileService.getUserProfile().pipe(
-      map(userProfile => {
-        return {
-          id: userProfile.id,
-          username: userProfile.username,
-          name: userProfile.username,
-          profilePicture: userProfile.profilePicture || 'assets/default-profile.png'
-        };
-      }),
-      catchError(error => {
-        return of({
-          id: 0,
-          username: 'desconhecido',
-          name: 'Usuário Desconhecido',
-          profilePicture: 'assets/default-profile.png'
-        });
-      })
-    );
-
-    this.userProfile$.subscribe(profile => {
-      // Pode adicionar uma mensagem de sucesso aqui se desejar
-    });
-  }
-
-  getToken(): string | null {
-    const token = localStorage.getItem('token');
-    return token;
+    })) || [];
   }
 
   likePost(post: Post): void {
-    const token = this.getToken(); 
-
-    if (!token) {
-      return;
+    if (!post.id) {
+      console.error('Erro: ID do post está indefinido.');
+      return; // Se o post não tiver ID, não executa a ação
     }
-
-    if (post.hasLiked) {
-      this.unlikePost(post);
-      return;
-    }
-
-    this.http.post(`${this.apiUrl}/${post.id}/like`, {}, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    })
-    .pipe(
-      catchError((error) => {
-        return throwError(error);
-      })
-    )
-    .subscribe(() => {
-      post.likes++;
-      post.hasLiked = true;
+    
+    const hasLiked = post.hasLiked ?? false; // Verifica se o post já foi curtido
+    this.postService.toggleLike(post.id, hasLiked).subscribe({
+      next: () => {
+        post.likes += hasLiked ? -1 : 1;
+        post.hasLiked = !hasLiked;
+        this.cdRef.detectChanges(); // Força a detecção de mudanças para atualizar o UI
+      },
+      error: (error: HttpErrorResponse) => console.error('Error liking/unliking post:', error)
     });
   }
 
-  unlikePost(post: Post): void {
-    const token = this.getToken();
+  addComment(post: Post, comment: string): void {
+    if (!comment.trim()) return; // Não permite comentário vazio
 
-    if (!token) {
-      return;
-    }
+    this.userProfile$.pipe(
+      switchMap(userProfile => {
+        const newComment: Comment = {
+          user: userProfile,
+          text: comment.trim(),
+          timestamp: new Date()
+        };
+        post.comments.unshift(newComment); // Adiciona o novo comentário no topo
+        post.newComment = ''; // Limpa o campo de novo comentário
+        post.isCommenting = false; // Fecha o campo de adicionar comentário
 
-    this.http.delete(`${this.apiUrl}/${post.id}/like`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    })
-    .pipe(
-      catchError((error) => {
-        return throwError(error);
+        return this.postService.addComment(post.id, comment);
       })
-    )
-    .subscribe(() => {
-      post.likes--;
-      post.hasLiked = false;
+    ).subscribe({
+      next: () => {
+        this.cdRef.detectChanges(); // Força a detecção de mudanças para atualizar a lista de comentários
+      },
+      error: (error: HttpErrorResponse) => console.error('Error adding comment:', error)
     });
   }
 
   toggleCommenting(post: Post): void {
-    post.isCommenting = !post.isCommenting;
-  }
-
-  addComment(post: Post, comment: string | undefined): void {
-    if (comment && comment.trim()) { // Certifique-se de que não é undefined e não é vazio
-      firstValueFrom(this.userProfile$).then(userProfile => {
-          const newComment: Comment = {
-              user: userProfile,
-              text: comment,
-              timestamp: new Date()
-          };
-          post.comments.unshift(newComment); // Altera para unshift para adicionar o novo comentário no início
-          this.newComment = ''; // Reseta o campo de novo comentário
-          post.isCommenting = false;
-
-          this.postService.addComment(post.id, comment).subscribe({
-              next: () => {
-                  // Pode adicionar uma mensagem de sucesso aqui se desejar
-              },
-              error: (error) => {
-                  // Pode adicionar uma mensagem de erro aqui se desejar
-              }
-          });
-      }).catch(error => {
-          // Pode adicionar uma mensagem de erro ao obter perfil do usuário se desejar
-      });
-    }
+    post.isCommenting = !post.isCommenting; // Alterna a visibilidade da seção de comentário
   }
 
   viewAllComments(post: Post): void {
-    post.showAllComments = !post.showAllComments;
+    post.showAllComments = !post.showAllComments; // Alterna a exibição dos comentários
+    this.cdRef.detectChanges();
   }
 
   favoritePost(post: Post): void {
+    if (!post || !post.id) {
+      console.error("ID do post está indefinido.");
+      return; // Evita que o serviço seja chamado se o ID do post for inválido
+    }
+  
     if (post.favorites) {
       this.postService.unfavoritePost(post.id).subscribe({
         next: () => {
           post.favorites = false;
+          this.cdRef.detectChanges(); // Força a detecção de mudanças para atualizar a UI
         },
-        error: (error) => {
-          // Pode adicionar uma mensagem de erro ao desfavoritar o post se desejar
-        }
+        error: error => console.error('Erro ao desfavoritar post:', error)
       });
     } else {
       this.postService.favoritePost(post.id).subscribe({
         next: () => {
           post.favorites = true;
+          this.cdRef.detectChanges(); // Força a detecção de mudanças para atualizar a UI
         },
-        error: (error) => {
-          // Pode adicionar uma mensagem de erro ao favoritar o post se desejar
-        }
+        error: error => console.error('Erro ao favoritar post:', error)
       });
     }
   }
 
-  navigateToUserProfile(userId: number) {
-    this.router.navigate(['/profile', userId]);
+  navigateToUserProfile(userId: number): void {
+    this.router.navigate(['/profile', userId]); // Navega para o perfil do usuário
   }
 
-  // Getter para obter a URL da foto de perfil
   getProfilePictureUrl(profilePicture: string): string {
     return profilePicture ? `http://localhost:3000/uploads/${profilePicture}` : 'assets/default-profile.png';
   }

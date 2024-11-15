@@ -77,17 +77,41 @@
 }
 
 .follow-button {
-  background-color: #007bff; /* Cor do botão */
-  color: white; /* Cor do texto */
-  border: none; /* Remove a borda padrão */
-  border-radius: 5px; /* Bordas arredondadas */
-  padding: 12px 20px; /* Espaçamento interno */
-  cursor: pointer; /* Cursor em forma de mão ao passar o mouse */
-  margin-top: 20px; /* Espaço acima do botão */
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  margin-top: 20px; /* Aumenta a distância do botão em relação ao conteúdo acima */
 }
 
+/* Efeito de crescimento suave ao clicar */
+.follow-button.clicked {
+  transform: scale(1.1); /* Efeito de crescimento ao clicar */
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.5); /* Adiciona uma sombra ao botão quando clicado */
+}
+
+/* Estilo de hover para melhorar o feedback visual */
 .follow-button:hover {
-  background-color: #0056b3; /* Cor ao passar o mouse */
+  background-color: #0056b3;
+  transform: scale(1.05); /* Leve aumento no hover para uma interação mais suave */
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3); /* Suaviza a sombra no hover */
+}
+
+/* Estilo de pressionamento para um efeito de redução suave */
+.follow-button:active {
+  transform: scale(0.95); /* Efeito de encolhimento ao pressionar */
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2); /* Reduz a sombra ao pressionar */
+}
+
+/* Estilo quando está seguindo */
+.follow-button[ngClass~="clicked"] {
+  background-color: #d9534f; /* Vermelho para 'Deixar de Seguir' */
+  transform: scale(1.1); /* Efeito de crescimento */
+  box-shadow: 0 4px 12px rgba(217, 83, 79, 0.5); /* Adiciona uma sombra vermelha ao clicar */
 }
 
 .follow-button:disabled {
