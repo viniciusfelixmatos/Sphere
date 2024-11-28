@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
 
 interface UserProfile {
   username: string;
@@ -31,16 +32,16 @@ interface Comment {
 interface Post {
   id: number;
   title: string;
-  user: User; 
+  user: User;
   content: string;
   likes: number;
   comments: Comment[];
   favorites: boolean;
   hasLiked: boolean;
   timestamp: Date;
-  profilePicture?: string; 
-  userId?: number; 
-  username?: string; 
+  profilePicture?: string;
+  userId?: number;
+  username?: string;
 }
 
 @Injectable({
@@ -51,18 +52,19 @@ export class ProfileService {
   private profilePictureSubject = new BehaviorSubject<string>('http://localhost:3000/uploads/default-profile.png');
   profilePicture$ = this.profilePictureSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {}
 
   // Função para obter o token de forma centralizada
-  // Alteração do método para public
   public getToken(): string | null {
-    const token = localStorage.getItem('token');
-    if (!token) {
-    console.warn('Token não encontrado no localStorage');
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.warn('Token não encontrado no localStorage');
+      }
+      return token;
     }
-    return token;
+    return null;
   }
-
 
   // Função para obter cabeçalhos com token de autenticação
   private getHeaders(): HttpHeaders {
@@ -101,21 +103,21 @@ export class ProfileService {
   // Atualizar o perfil do usuário
   updateUserProfile(formData: FormData): Observable<any> {
     const token = this.getToken();
-    
+
     if (!token) {
       console.warn('Token não encontrado. Atualização do perfil não pode ser realizada.');
       return throwError(() => new Error('Token não encontrado'));
     }
 
     const headers = this.getHeaders();
-    
+
     return this.http.put(`${this.baseUrl}/profile`, formData, { headers }).pipe(
       map(() => {
         this.getUserProfile().subscribe(profile => {
           const profilePictureUrl = profile.profilePicture
             ? `http://localhost:3000/uploads/${profile.profilePicture}`
             : 'http://localhost:3000/uploads/default-profile.png';
-          
+
           this.profilePictureSubject.next(profilePictureUrl);
         });
       }),
@@ -141,7 +143,7 @@ export class ProfileService {
     }
 
     const headers = this.getHeaders();
-    
+
     return this.http.get<Post[]>(`${this.baseUrl}/posts`, { headers }).pipe(
       map(posts => {
         return posts.map(post => {
@@ -169,7 +171,7 @@ export class ProfileService {
   getUserLikes(): Observable<Post[]> {
     const token = this.getToken();
     if (!token) {
-        return throwError(() => new Error('Token não encontrado'));
+      return throwError(() => new Error('Token não encontrado'));
     }
 
     const headers = this.getHeaders();
@@ -180,7 +182,7 @@ export class ProfileService {
           const profilePictureUrl = post.profilePicture
             ? `http://localhost:3000/uploads/${post.profilePicture}`
             : 'http://localhost:3000/uploads/default-profile.png';
-    
+
           return {
             ...post,
             timestamp: new Date(post.timestamp),
@@ -207,12 +209,12 @@ export class ProfileService {
     }
 
     const headers = this.getHeaders();
-    
+
     return this.http.get<Comment[]>(`${this.baseUrl}/comments`, { headers }).pipe(
       map(comments => {
         return comments.map(comment => ({
           ...comment,
-          profilePicture: comment.profilePicture || 'http://localhost:3000/uploads/default-profile.png', 
+          profilePicture: comment.profilePicture || 'http://localhost:3000/uploads/default-profile.png',
         }));
       }),
       catchError(error => {
@@ -228,16 +230,16 @@ export class ProfileService {
     if (!token) {
       return throwError(() => new Error('Token não encontrado'));
     }
-  
+
     const headers = this.getHeaders();
-    
+
     return this.http.get<Post[]>(`${this.baseUrl}/favorites`, { headers }).pipe(
       map(favorites => {
         return favorites.map(post => {
           const profilePictureUrl = post.profilePicture
             ? `http://localhost:3000/uploads/${post.profilePicture}`
             : 'http://localhost:3000/uploads/default-profile.png';
-  
+
           return {
             ...post,
             timestamp: new Date(post.timestamp),

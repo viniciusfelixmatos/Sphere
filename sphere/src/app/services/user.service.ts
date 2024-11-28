@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 // Interface do usuário
@@ -54,7 +54,6 @@ export class UserService {
     console.log('ID do usuário no localStorage:', userId); // Verifique se o ID está sendo recuperado corretamente
     return of(userId); // Retorna o ID ou null caso não esteja presente
   }
-  
 
   // Obtém as informações de um usuário pelo ID
   getUserById(userId: string): Observable<User> {
@@ -87,6 +86,7 @@ export class UserService {
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error); // Loga o erro no console
+      // Você pode retornar um valor alternativo para manter o fluxo, ou re-throw o erro se preferir
       return of(result as T); // Retorna um valor padrão para o fluxo
     };
   }
