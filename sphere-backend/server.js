@@ -19,9 +19,9 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Configurar CORS para permitir apenas o frontend
 app.use(cors({
-  origin: 'http://localhost:4200', // Permitir apenas a origem do frontend
+  origin: '*', // Permitir apenas a origem do frontend
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Permitir métodos HTTP
-  allowedHeaders: ['Content-Type', 'Authorization'] // Permitir cabeçalhos específicos
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'] // Permitir cabeçalhos específicos
 }));
 
 // Verificar se a pasta 'uploads' existe
