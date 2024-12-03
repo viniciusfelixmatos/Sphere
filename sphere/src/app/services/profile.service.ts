@@ -48,8 +48,8 @@ interface Post {
   providedIn: 'root'
 })
 export class ProfileService {
-  private baseUrl = 'http://localhost:3000/api/user'; // URL base da API
-  private profilePictureSubject = new BehaviorSubject<string>('http://localhost:3000/uploads/default-profile.png');
+  private baseUrl = 'http://212.28.179.131:3000/api/user'; // URL base da API
+  private profilePictureSubject = new BehaviorSubject<string>('http://212.28.179.131:3000/uploads/default-profile.png');
   profilePicture$ = this.profilePictureSubject.asObservable();
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {}
@@ -87,8 +87,8 @@ export class ProfileService {
     return this.http.get<UserProfile>(`${this.baseUrl}/profile`, { headers }).pipe(
       map((profile: UserProfile) => {
         const profilePictureUrl = profile.profilePicture
-          ? `http://localhost:3000/uploads/${profile.profilePicture}`
-          : 'http://localhost:3000/uploads/default-profile.png';
+          ? `http://212.28.179.131:3000/uploads/${profile.profilePicture}`
+          : 'http://212.28.179.131:3000/uploads/default-profile.png';
         this.profilePictureSubject.next(profilePictureUrl);
         profile.profilePicture = profilePictureUrl;
         return profile;
@@ -115,8 +115,8 @@ export class ProfileService {
       map(() => {
         this.getUserProfile().subscribe(profile => {
           const profilePictureUrl = profile.profilePicture
-            ? `http://localhost:3000/uploads/${profile.profilePicture}`
-            : 'http://localhost:3000/uploads/default-profile.png';
+            ? `http://212.28.179.131:3000/uploads/${profile.profilePicture}`
+            : 'http://212.28.179.131:3000/uploads/default-profile.png';
 
           this.profilePictureSubject.next(profilePictureUrl);
         });
@@ -153,8 +153,8 @@ export class ProfileService {
             user: {
               ...post.user,
               profilePicture: post.user?.profilePicture
-                ? `http://localhost:3000/uploads/${post.user.profilePicture}`
-                : 'http://localhost:3000/uploads/default-profile.png',
+                ? `http://212.28.179.131:3000/uploads/${post.user.profilePicture}`
+                : 'http://212.28.179.131:3000/uploads/default-profile.png',
               username: post.user.username || 'Usuário Desconhecido'
             }
           };
@@ -180,8 +180,8 @@ export class ProfileService {
       map(posts => {
         return posts.map(post => {
           const profilePictureUrl = post.profilePicture
-            ? `http://localhost:3000/uploads/${post.profilePicture}`
-            : 'http://localhost:3000/uploads/default-profile.png';
+            ? `http://212.28.179.131:3000/uploads/${post.profilePicture}`
+            : 'http://212.28.179.131:3000/uploads/default-profile.png';
 
           return {
             ...post,
@@ -214,7 +214,7 @@ export class ProfileService {
       map(comments => {
         return comments.map(comment => ({
           ...comment,
-          profilePicture: comment.profilePicture || 'http://localhost:3000/uploads/default-profile.png',
+          profilePicture: comment.profilePicture || 'http://212.28.179.131:3000/uploads/default-profile.png',
         }));
       }),
       catchError(error => {
@@ -237,8 +237,8 @@ export class ProfileService {
       map(favorites => {
         return favorites.map(post => {
           const profilePictureUrl = post.profilePicture
-            ? `http://localhost:3000/uploads/${post.profilePicture}`
-            : 'http://localhost:3000/uploads/default-profile.png';
+            ? `http://212.28.179.131:3000/uploads/${post.profilePicture}`
+            : 'http://212.28.179.131:3000/uploads/default-profile.png';
 
           return {
             ...post,

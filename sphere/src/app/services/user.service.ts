@@ -26,7 +26,7 @@ export class UserService {
   });
 
   currentUser$ = this.currentUserSubject.asObservable();
-  private apiUrl = 'http://localhost:3000/api/user'; // URL base da API
+  private apiUrl = 'http://212.28.179.131:3000/api/user'; // URL base da API
 
   constructor(private http: HttpClient) {}
 

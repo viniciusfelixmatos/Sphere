@@ -34,7 +34,7 @@ interface Post {
 export class PostService {
   private postsSubject = new BehaviorSubject<Post[]>([]);
   posts$ = this.postsSubject.asObservable().pipe(shareReplay(1));
-  private apiUrl = 'http://localhost:3000/api/posts';
+  private apiUrl = 'http://212.28.179.131:3000/api/posts';
 
   constructor(
     private http: HttpClient,
