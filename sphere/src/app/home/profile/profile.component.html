@@ -5,7 +5,7 @@
     <!-- Profile Image Section -->
     <div class="profile-image-container">
       <img class="profile-picture" 
-           [src]="user.profilePicture ? user.profilePicture : 'http://localhost:3000/uploads/default-profile.png'" 
+           [src]="user.profilePicture ? user.profilePicture : 'http://212.28.179.131:3000/uploads/default-profile.png'" 
            alt="Foto de Perfil de {{ user.username }}">
     </div>
 
@@ -72,7 +72,7 @@
                 <!-- Foto de Perfil do Usuário que fez o comentário -->
                 <div class="comment-profile-picture">
                   <img class="profile-picture-circle" 
-                       [src]="comment.profilePicture ? 'http://localhost:3000/uploads/' + comment.profilePicture : 'http://localhost:3000/uploads/default-profile.png'" 
+                       [src]="comment.profilePicture ? 'http://212.28.179.131:3000/uploads/' + comment.profilePicture : 'http://212.28.179.131:3000/uploads/default-profile.png'" 
                        alt="Foto de Perfil de {{ comment.username || 'Usuário Desconhecido' }}">
                 </div>
 
@@ -128,7 +128,7 @@
           <form (ngSubmit)="saveProfileChanges()">
             <div class="profile-image-edit-container">
               <div class="profile-image-preview">
-                <img [src]="profilePicturePreview ? profilePicturePreview : 'http://localhost:3000/uploads/default-profile.png'" alt="Imagem de Perfil">
+                <img [src]="profilePicturePreview ? profilePicturePreview : 'http://212.28.179.131:3000/uploads/default-profile.png'" alt="Imagem de Perfil">
               </div>
               <button type="button" class="change-photo-btn" (click)="triggerFileInput()">Alterar Foto</button>
               <input type="file" #profilePictureInput (change)="onProfilePictureChange($event)" style="display: none;">

@@ -175,6 +175,6 @@ export class PostFeedComponent implements OnInit {
   }
 
   getProfilePictureUrl(profilePicture: string): string {
-    return profilePicture ? `http://localhost:3000/uploads/${profilePicture}` : 'assets/default-profile.png';
+    return profilePicture ? `http://212.28.179.131:3000/uploads/${profilePicture}` : 'assets/default-profile.png';
   }
 }

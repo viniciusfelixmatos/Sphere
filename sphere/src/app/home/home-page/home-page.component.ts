@@ -24,7 +24,7 @@ export class HomePageComponent implements OnInit {
   isCreatePostOpen = false;
   isDevelopmentModalOpen = false;
   postText = '';
-  userProfilePicture = 'http://localhost:3000/uploads/default-profile.png';
+  userProfilePicture = 'http://212.28.179.131:3000/uploads/default-profile.png';
   userId: number | null = null;
   progress = 0;
   private progressInterval: any;
@@ -51,7 +51,7 @@ export class HomePageComponent implements OnInit {
     this.profileService.getUserProfile().subscribe(
       (profile: any) => {
         if (profile) {
-          this.userProfilePicture = profile.profilePicture || 'http://localhost:3000/uploads/default-profile.png';
+          this.userProfilePicture = profile.profilePicture || 'http://212.28.179.131:3000/uploads/default-profile.png';
           this.userId = profile.id;
         }
       },

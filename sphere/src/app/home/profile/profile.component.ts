@@ -54,7 +54,7 @@ interface Post {
 export class ProfileComponent implements OnInit {
   @ViewChild('profilePictureInput', { static: false }) profilePictureInput!: ElementRef;
 
-  defaultProfilePicture = 'http://localhost:3000/uploads/default-profile.png';
+  defaultProfilePicture = 'http://212.28.179.131:3000/uploads/default-profile.png';
   
   src: string = this.defaultProfilePicture;
 
